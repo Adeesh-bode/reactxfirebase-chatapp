@@ -3,7 +3,12 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';   // 1. import t
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
-import { auth } from '../utils/firebaseconfig'; // 2. import our key from utils
+import { auth } from '../utils/firebaseconfig'; // 2. import our key from utils 
+import { provider } from '../utils/firebaseconfig';  
+
+
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -37,6 +42,24 @@ const Signup = () => {
     console.log(credentials)
   }
 
+
+
+  const handleGoogleSignin = async ()=>{
+    await signInWithPopup(auth, provider)
+    .then((result)=>{
+      console.log("Successfully Logged in using Google");
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+    })
+    .catch((error)=>{
+
+      console.log(error.code);
+      console.log(error.message);
+    })
+  }
+
+
   useEffect(()=>{
     onAuthStateChanged( auth, (user)=>{
       try{
@@ -66,6 +89,8 @@ const Signup = () => {
           <input type='text' placeholder='password' name='password' onChange={(e)=>handleChange(e)} ></input>
           <input type='submit' className=''></input>
       </form>
+
+      <button onClick={()=>handleGoogleSignin()} >Google Sign Up</button>
     </div>
   )
 }

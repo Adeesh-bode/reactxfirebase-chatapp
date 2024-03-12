@@ -26,3 +26,6 @@ import { getAuth} from "firebase/auth";
 
 export const auth = getAuth(); // auth is a key ( our authority is encapsulated in it)
 
+                                                                // PART3: Google auth
+import { GoogleAuthProvider } from "firebase/auth";
+export const provider = new GoogleAuthProvider();

@@ -3,7 +3,15 @@ import { signInWithEmailAndPassword } from 'firebase/auth';   // 1. import the f
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+import { FaGoogle } from "react-icons/fa";
+import { FaExternalLinkAlt } from "react-icons/fa";
+
+
+
 import { auth } from '../utils/firebaseconfig'; // 2. import our key from utils
+import { provider } from '../utils/firebaseconfig';  
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,6 +45,22 @@ const Login = () => {
     console.log(credentials)
   }
 
+
+  const handleGoogleSignin = async ()=>{
+    await signInWithPopup(auth, provider)
+    .then((result)=>{
+      console.log("Successfully Logged in using Google");
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+    })
+    .catch((error)=>{
+
+      console.log(error.code);
+      console.log(error.message);
+    })
+  }
+
   useEffect(()=>{
     onAuthStateChanged( auth, (user)=>{
       try{
@@ -59,16 +83,33 @@ const Login = () => {
   return (
     <div className='flex justify-center items-center w-screen h-screen flex flex-col  gap-4'>
       <form onSubmit={(e)=>handleSubmit(e)}
-        className='flex flex-col bg-[#2d2a2a] h-fit w-fit p-4 gap-3' 
+        className='flex flex-col bg-[#2d2a2a] h-fit w-fit p-5 gap-4' 
       > 
-          <div className='text-3xl  text-center'>Login</div>
-          <input type='text' placeholder='email' name='email' onChange={(e)=>handleChange(e)}></input>
-          <input type='text' placeholder='password' name='password' onChange={(e)=>handleChange(e)} ></input>
-          <input type='submit' className=''></input>
+          <div className='text-3xl  text-center text-teal-500'>Login</div>
+          <input type='text' placeholder='Email' name='email' onChange={(e)=>handleChange(e)} 
+          className=' px-2 py-1 bg-transparent border border-white text-white'
+          ></input>
+          <input type='text' placeholder='Password' name='password' onChange={(e)=>handleChange(e)}
+          className=' px-2 py-1 bg-transparent border border-white text-white'
+          ></input>
+          <input type='submit' className='bg-teal-600 text-white   w-full'></input>
       </form>
-      <button onClick={()=>navigate('/signup')}>Signup</button>
+      <button onClick={()=>handleGoogleSignin()} 
+      className='text-white flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border border-white hover:bg-teal-500 hover:text-black'
+      >
+      <FaGoogle size={30} className='text-teal-500'/>
+        Sign in
+        </button>
+
+      <button onClick={()=>navigate('/signup')}
+      className='text-white flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border border-white hover:bg-teal-500 hover:text-black'      
+      >
+      <FaExternalLinkAlt />
+        Signup
+        </button>
+
     </div>
   )
 }
 
-export default Login;
+export default Login; 
