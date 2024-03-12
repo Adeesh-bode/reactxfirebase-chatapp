@@ -11,7 +11,6 @@ const Home = () => {
   useEffect(()=>{
     onAuthStateChanged( auth, (user)=>{
       try{
-
         if(user){
           navigate("/");
           const uid = user.uid;
@@ -19,6 +18,7 @@ const Home = () => {
         }
         else{
           console.log("User is not signed in");
+          navigate("/login");
         }
       }
       catch(error){
