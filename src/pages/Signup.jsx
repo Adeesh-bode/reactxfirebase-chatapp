@@ -11,6 +11,10 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 import { useSnackbar } from 'notistack';
 
+import { FcGoogle } from "react-icons/fc";
+import Connect from '../assets/connect.gif';
+
+
 const Signup = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [ passwordStrength , setPasswordStrength ] = useState(false);
@@ -18,6 +22,8 @@ const Signup = () => {
   const [ credentials , setCredentials ] = useState({
     email: "",
     password:"",
+    username:"",
+    uid:"",
   }) 
 
   const handleChange =(e)=>{
@@ -124,18 +130,37 @@ const Signup = () => {
   },[])
 
   return (
-    <div className='flex justify-center items-center w-screen h-screen'>
-      <form onSubmit={(e)=>handleSubmit(e)}
-        className='flex flex-col bg-[#2d2a2a] h-fit w-fit p-4 gap-3' 
-      > 
-          <div className='text-3xl  text-center'>Sign Up</div>
-          <input type='text' placeholder='email' name='email' onChange={(e)=>handleChange(e)}></input>
-          <input type='text' placeholder='password' name='password' onChange={(e)=>handleChange(e)} ></input> 
-          { !passwordStrength && <div>Password should be at least 6 characters</div> }
-          <input type='submit' className=''></input>
-      </form>
+    <div className='bg-[#2d2a2a] w-screen h-screen flex justify-center items-center '>
 
-      <button onClick={()=>handleGoogleSignin()} >Google Sign Up</button>
+    <div className='flex justify-around items-center bg-white   gap-4 w-2/5 h-1/2'>
+      <form onSubmit={(e)=>handleSubmit(e)}
+        className='flex flex-col  h-fit w-fit p-5 gap-4' 
+      > 
+          <div className='text-3xl  text-center text-teal-500'>Sign Up</div>
+          <input type='text' placeholder='username' name='username' onChange={(e)=>handleChange(e)}
+          className=' px-2 py-1 bg-transparent border'
+          ></input>
+          <input type='text' placeholder='email' name='email' onChange={(e)=>handleChange(e)}
+          className=' px-2 py-1 bg-transparent border'
+          ></input>
+          <input type='text' placeholder='password' name='password' onChange={(e)=>handleChange(e)} 
+          className=' px-2 py-1 bg-transparent border'
+          ></input> 
+          { !passwordStrength && <div className='text-[10px] text-slate-700'>Password should be at least 6 characters</div> }
+          <input type='submit' className='bg-teal-600 text-white w-full py-1'></input>
+          {/* <button onClick={()=>handleGoogleSignin()} 
+            className='text-white justify-center flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border border-white hover:bg-teal-500 hover:text-black'
+          >
+            <FcGoogle size={30} className='text-teal-500'/>
+            Sign in
+          </button>       */}
+      </form>
+      <div className='w-fit h-fit  flex flex-col justify-between items-center'> 
+        <div>Let's Connect</div>
+        <img src={Connect} alt='interactive-img' />
+      </div>
+
+    </div>
     </div>
   )
 }

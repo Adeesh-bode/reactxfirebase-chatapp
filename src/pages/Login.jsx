@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 
@@ -15,6 +15,8 @@ import { provider } from '../utils/firebaseconfig';
 
 // import { SnackbarProvider, enqueueSnackbar } from 'notistack';
 import { useSnackbar } from 'notistack';
+
+import Connect from '../assets/connect.gif';
 
 
 const Login = () => {
@@ -113,33 +115,41 @@ const Login = () => {
   },[])
 
   return (
-    <div className='flex justify-center items-center w-screen h-screen flex flex-col  gap-4'>
+    <div className=' bg-[#2d2a2a] w-screen h-screen flex justify-center items-center ' >
+
+    <div className='flex  justify-around items-center bg-white   gap-4 w-2/5 h-1/2 '>
       <form onSubmit={(e)=>handleSubmit(e)}
-        className='flex flex-col bg-[#2d2a2a] h-fit w-fit p-5 gap-4' 
+        className='flex flex-col  h-fit w-fit p-5 gap-4' 
       > 
           <div className='text-3xl  text-center text-teal-500'>Login</div>
           <input type='text' placeholder='Email' name='email' onChange={(e)=>handleChange(e)} 
-          className=' px-2 py-1 bg-transparent border border-white text-white'
+          className=' px-2 py-1 bg-transparent border'
           ></input>
           <input type='text' placeholder='Password' name='password' onChange={(e)=>handleChange(e)}
-          className=' px-2 py-1 bg-transparent border border-white text-white'
+          className=' px-2 py-1 bg-transparent border'
           ></input>
-          <input type='submit' className='bg-teal-600 text-white   w-full'></input>
+          <input type='submit' className='bg-teal-600 text-white w-full py-1'></input>
+          <button onClick={()=>handleGoogleSignin()} 
+            className='text-white justify-center flex items-center gap-2 bg-[#2d2a2a] px-2  border border-white hover:bg-white hover: border hover: border-black  hover:text-black'
+          >
+            <FcGoogle size={30} className='text-teal-500'/>
+            Sign in
+          </button>
+      <div className='flex justify-between w-full '>
+      
+      <div onClick={()=>navigate('/signup')} className='text-teal-400 flex justify-center gap-2 items-center' >
+        <FaExternalLinkAlt className=''/>
+        Don't have an account?
+      </div>
+      </div>
       </form>
-      <button onClick={()=>handleGoogleSignin()} 
-      className='text-white flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border border-white hover:bg-teal-500 hover:text-black'
-      >
-      <FaGoogle size={30} className='text-teal-500'/>
-        Sign in
-        </button>
+      <div className='w-fit h-fit  flex flex-col justify-between items-center'> 
+        <div>Let's Connect</div>
+        <img src={Connect} alt='interactive-img' />
+      </div>
+      
 
-      <button onClick={()=>navigate('/signup')}
-      className='text-white flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border border-white hover:bg-teal-500 hover:text-black'      
-      >
-      <FaExternalLinkAlt />
-        Signup
-        </button>
-
+    </div>
     </div>
   )
 }

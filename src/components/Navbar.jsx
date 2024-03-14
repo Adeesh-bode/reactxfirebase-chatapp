@@ -5,11 +5,11 @@ import { MdAccountCircle } from "react-icons/md";
 
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <div className='h-full w-[70px] bg-black fixed flex flex-col gap-2 items-center justify-start px-2 py-8'>
         <MdAccountCircle color='white' size={30} />
-        <button onClick={()=>navigate('/login')} className='text-white flex flex-col gap-3'>Login</button>
+        {/* <button onClick={()=>navigate('/login')} className='text-white flex flex-col gap-3'>Login</button>      Not Needed as useeffect k navigate se directed  to login                         */}
     </div>
   )
 }
