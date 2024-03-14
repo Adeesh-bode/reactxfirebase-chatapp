@@ -13,7 +13,13 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { auth } from '../utils/firebaseconfig'; // 2. import our key from utils
 import { provider } from '../utils/firebaseconfig';  
 
+// import { SnackbarProvider, enqueueSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
+
+
 const Login = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  // const [ status , setStatus ] = useState(0);
   const navigate = useNavigate();
   const [ credentials , setCredentials ] = useState({
     email: "",
@@ -29,20 +35,46 @@ const Login = () => {
   const handleSubmit = async (e)=>{
     e.preventDefault(); // to avoid refresh of page
     const { email,password } = credentials;
-    console.log(credentials);
-    console.log(email[0] , password[0]);
+    // console.log(credentials);
+    // console.log(email[0] , password[0]);
     await signInWithEmailAndPassword(auth , email[0] , password[0])  // this function returns a promise can say response which is useful for ack and data
     .then((usercredentials)=>{                                     // like try catch block we use then catch block
-      console.log("Successfully Logged In");   
-      const user = usercredentials.user;
+      console.log("Successfully Logged In"); 
+      console.log("Successfully Logged In"); 
+      console.log("Successfully Logged In"); 
+      console.log("Successfully Logged In"); 
 
+      const user = usercredentials.user;
       console.log(user);
+      
+      enqueueSnackbar('Log in Successful ',{
+        variant : 'success',
+        autoHideDuration: 6000,
+        anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
+        dense:true, 
+      });
+
+
     })
     .catch((error)=>{
-      console.log("Error Code:", error.code);
-      console.log("Error Message:", error.message);
+      console.log(error.code);
+      if(error.code === "auth/invalid-credential" || error.code === "auth/invalid-email"){
+        enqueueSnackbar('Invalid Credential',{
+          variant : 'error',
+          autoHideDuration: 3000,
+          anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
+          dense:true, 
+        });
+      }
+      else if(error.code === 'auth/network-request-failed'){
+        enqueueSnackbar('Check your internet connection',{
+          variant : 'error',
+          autoHideDuration: 3000,
+          anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
+          dense:true, 
+        });
+      }
     })
-    console.log(credentials)
   }
 
 

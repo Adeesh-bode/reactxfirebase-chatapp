@@ -17,8 +17,8 @@ const Home = () => {
           console.log(uid);
         }
         else{
-          console.log("User is not signed in");
           navigate("/login");
+          console.log("User is not signed in");
         }
       }
       catch(error){
