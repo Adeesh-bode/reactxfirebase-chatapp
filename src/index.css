@@ -9,6 +9,10 @@
     padding: 0;
     /* outline:2px solid red; */
     /* background: #2d2a2a; */
+    /* background: #f7f5f5; */
+}
+::-webkit-scrollbar{
+    display: none;
 }
 
 body{

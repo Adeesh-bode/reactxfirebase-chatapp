@@ -5,6 +5,10 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../utils/firebaseconfig';
 import { useNavigate } from 'react-router-dom';
 
+
+import ChatRoom from '../components/ChatRoom';
+import Users from '../components/Users';
+
 const Home = () => {
   const navigate = useNavigate();
 
@@ -28,9 +32,10 @@ const Home = () => {
   },[])
 
   return (
-    <div className='w-screen h-screen'>
+    <div className='w-screen h-screen flex '>
       <Navbar />
-      Home
+      <Users />
+      <ChatRoom />
     </div>
   )
 }

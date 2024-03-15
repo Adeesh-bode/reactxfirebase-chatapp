@@ -24,6 +24,7 @@ const Signup = () => {
     password:"",
     username:"",
     uid:"",
+    bio:"Hello!"
   }) 
 
   const handleChange =(e)=>{
@@ -143,10 +144,12 @@ const Signup = () => {
           <input type='text' placeholder='email' name='email' onChange={(e)=>handleChange(e)}
           className=' px-2 py-1 bg-transparent border'
           ></input>
+          <div className='flex flex-col gap-1'>
           <input type='text' placeholder='password' name='password' onChange={(e)=>handleChange(e)} 
           className=' px-2 py-1 bg-transparent border'
           ></input> 
           { !passwordStrength && <div className='text-[10px] text-slate-700'>Password should be at least 6 characters</div> }
+          </div>
           <input type='submit' className='bg-teal-600 text-white w-full py-1'></input>
           {/* <button onClick={()=>handleGoogleSignin()} 
             className='text-white justify-center flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border border-white hover:bg-teal-500 hover:text-black'
