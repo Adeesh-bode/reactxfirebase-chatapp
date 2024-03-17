@@ -9,16 +9,36 @@ import { useNavigate } from 'react-router-dom';
 import ChatRoom from '../components/ChatRoom';
 import Users from '../components/Users';
 
+
+
+import { getDocs } from 'firebase/firestore';
+
+import { collection } from 'firebase/firestore';
+
+import { db } from '../utils/firebaseconfig';
+
+
 const Home = () => {
   const navigate = useNavigate();
+
+  const fetchData = async ()=>{
+
+    const coll = getDocs(collection(db, 'users'));  
+    console.log("Collection:",coll);
+   
+    return coll;
+  }
+
+
 
   useEffect(()=>{
     onAuthStateChanged( auth, (user)=>{
       try{
         if(user){
-          navigate("/");
-          const uid = user.uid;
-          console.log(uid);
+          // navigate("/");
+          // const uid = user.uid;
+          // console.log(uid);
+          fetchData();
         }
         else{
           navigate("/login");
@@ -35,7 +55,7 @@ const Home = () => {
     <div className='w-screen h-screen flex '>
       <Navbar />
       <Users />
-      <ChatRoom />
+      <ChatRoom user='Technical Lead' />
     </div>
   )
 }

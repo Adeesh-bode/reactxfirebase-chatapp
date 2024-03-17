@@ -24,8 +24,15 @@ const app = initializeApp(firebaseConfig);
 // will be using authentication service of firebase(SDK) here...which is in auth module of firebase
 import { getAuth} from "firebase/auth";
 
-export const auth = getAuth(); // auth is a key ( our authority is encapsulated in it)
+const auth = getAuth(); // auth is a key ( our authority is encapsulated in it)
 
                                                                 // PART3: Google auth
 import { GoogleAuthProvider } from "firebase/auth";
-export const provider = new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
+                                                                // PART4: Connection With Database
+import { getFirestore } from "firebase/firestore";
+
+// Initialize Cloud Firestore and get a reference to the service
+ const db = getFirestore(app);
+
+export { auth , provider , db }; // exporting all the keys to be used in other files

@@ -14,49 +14,81 @@ import { useSnackbar } from 'notistack';
 import { FcGoogle } from "react-icons/fc";
 import Connect from '../assets/connect.gif';
 
+import { doc, setDoc } from "firebase/firestore"; 
+import { db } from '../utils/firebaseconfig';
+
+import { context } from '../utils/context';
+import { useContext } from 'react';
+
 
 const Signup = () => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { credentials, setCredentials } = useContext(context);
+  const { enqueueSnackbar} = useSnackbar();
   const [ passwordStrength , setPasswordStrength ] = useState(false);
   const navigate = useNavigate();
-  const [ credentials , setCredentials ] = useState({
-    email: "",
-    password:"",
-    username:"",
-    uid:"",
-    bio:"Hello!"
-  }) 
+  // const [ credentials , setCredentials ] = useState({
+  //   email: "",
+  //   password:"",
+  //   username:"",
+  //   // uid:"",
+  //   status: false,
+  //   // bio:"Hello!",
+  //   // phonenumber: null,
+  //   // lastactive: null,
+  // }) 
 
   const handleChange =(e)=>{
-    setCredentials({ ... credentials , [e.target.name] : [e.target.value] })
-    credentials.password[0].length<6 ? (setPasswordStrength(false) ) : (setPasswordStrength(true));
-    console
-    console.log(passwordStrength);
+    setCredentials({ ... credentials , [e.target.name] : e.target.value })
+    credentials.password.length<6 ? (setPasswordStrength(false) ) : (setPasswordStrength(true));
   }
   
   
   const handleSubmit = async (e)=>{
     e.preventDefault(); // to avoid refresh of page
     const { email,password } = credentials;
-    // console.log(credentials);
-    console.log(email[0] , password[0]);
-    await createUserWithEmailAndPassword(auth , email[0] , password[0])  // this function returns a promise can say response which is useful for ack and data
-    .then((usercredentials)=>{                                     // like try catch block we use then catch block
-      console.log("Successfully Signed Up");   
-      const user = usercredentials.user;
-
+    await createUserWithEmailAndPassword(auth , email , password)  // this function returns a promise can say response which is useful for ack and data
+    .then(async (result)=>{                                     // like try catch block we use then catch block
+      
+      // notify
       enqueueSnackbar('Sign up Successful ',{
         variant:'success',
         autoHideDuration:3000,
         anchorOrigin:{ horizontal:'center', vertical:'top'},
         dense:true,
       })
+      console.log("Successfully Signed Up");  
+      
+      // storing uid in variable u
+      console.log(" Result:",result);
+      const u= result?.user?.uid;
+      console.log("UID:",u);
+      
+      // add user to database
 
-      console.log(user);
+      await setDoc(doc(db, "users", u ), {
+        uid: u, 
+        username: credentials.username,
+        email: credentials.email,
+        password: credentials.password,
+        status :  true,
+        // lastactive : new Date().toLocaleString(),
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+        //storing the details locally
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+    });
+
+
+
+
+      // console.log(user);
     })
     .catch((error)=>{
-      console.log("Error Code:", error.code);
-      console.log("Error Message:", error.message);
+      // console.log("Error Code:", error.code);
+      // console.log("Error Message:", error.message);
       if(error.code === 'auth/network-request-failed'){
         enqueueSnackbar('Check your internet connection',{
           variant : 'error',
@@ -90,7 +122,7 @@ const Signup = () => {
         });
       }
     })
-    console.log(credentials)
+    // console.log(credentials)
   }
 
 
@@ -100,8 +132,8 @@ const Signup = () => {
     .then((result)=>{
       console.log("Successfully Logged in using Google");
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const user = result.user;
+      // const token = credential.accessToken;
+      // const user = result.user;
     })
     .catch((error)=>{
 
@@ -111,14 +143,16 @@ const Signup = () => {
   }
 
 
-  useEffect(()=>{
+  useEffect(()=>{                                    /// observer
     onAuthStateChanged( auth, (user)=>{
       try{
 
         if(user){
           navigate("/");
-          const uid = user.uid;
-          console.log(uid);
+          // const uid = user.uid;
+          // console.log(uid);
+
+
         }
         else{
           console.log("User is not signed in");
@@ -133,7 +167,7 @@ const Signup = () => {
   return (
     <div className='bg-[#2d2a2a] w-screen h-screen flex justify-center items-center '>
 
-    <div className='flex justify-around items-center bg-white   gap-4 w-2/5 h-1/2'>
+    <div className='flex justify-around items-center bg-white  gap-4  w-2/5 h-auto rounded-md'>
       <form onSubmit={(e)=>handleSubmit(e)}
         className='flex flex-col  h-fit w-fit p-5 gap-4' 
       > 
@@ -151,12 +185,13 @@ const Signup = () => {
           { !passwordStrength && <div className='text-[10px] text-slate-700'>Password should be at least 6 characters</div> }
           </div>
           <input type='submit' className='bg-teal-600 text-white w-full py-1'></input>
-          {/* <button onClick={()=>handleGoogleSignin()} 
-            className='text-white justify-center flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border border-white hover:bg-teal-500 hover:text-black'
+          <button onClick={()=>handleGoogleSignin()} 
+            className='text-white justify-center flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border hover:bg-transparent  hover:border-black  hover:text-black'
           >
             <FcGoogle size={30} className='text-teal-500'/>
             Sign in
-          </button>       */}
+          </button>      
+          
       </form>
       <div className='w-fit h-fit  flex flex-col justify-between items-center'> 
         <div>Let's Connect</div>

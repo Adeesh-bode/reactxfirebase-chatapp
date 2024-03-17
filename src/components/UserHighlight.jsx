@@ -1,10 +1,10 @@
 import React from 'react'
-import UserImg from '../assets/user_dp.jpeg';
+import UserImg from '../assets/friend.jpg';
 
 
 const UserHighlight = () => {
   return (
-    <div className='bg-white border rounded-md w-full p-3'>
+    <div className='bg-white hover:bg-teal-300 border rounded-md w-full p-3'>
         <div className=' flex justify-start  items-center gap-2'>
             <img src={UserImg} alt='user profile Image' className='h-14 w-14 mx-3 rounded-full object-cover'/>
             <div className=' flex flex-col '>

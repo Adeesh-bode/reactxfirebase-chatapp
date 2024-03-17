@@ -8,19 +8,20 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-
+import showResult from '../utils/notistack';
 
 import { auth } from '../utils/firebaseconfig'; // 2. import our key from utils
 import { provider } from '../utils/firebaseconfig';  
 
 // import { SnackbarProvider, enqueueSnackbar } from 'notistack';
-import { useSnackbar } from 'notistack';
 
 import Connect from '../assets/connect.gif';
+import useCustomSnackbar from '../utils/notistack';
 
 
 const Login = () => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const showSnackbar = useCustomSnackbar();
+  console.log(showSnackbar);
   // const [ status , setStatus ] = useState(0);
   const navigate = useNavigate();
   const [ credentials , setCredentials ] = useState({
@@ -29,7 +30,7 @@ const Login = () => {
   }) 
 
   const handleChange =(e)=>{
-    setCredentials({ ... credentials , [e.target.name] : [e.target.value] })
+    setCredentials({ ... credentials , [e.target.name] : e.target.value})
     // console.log(credentials);
   }
   
@@ -39,42 +40,43 @@ const Login = () => {
     const { email,password } = credentials;
     // console.log(credentials);
     // console.log(email[0] , password[0]);
-    await signInWithEmailAndPassword(auth , email[0] , password[0])  // this function returns a promise can say response which is useful for ack and data
+    await signInWithEmailAndPassword(auth , email , password)  // this function returns a promise can say response which is useful for ack and data
     .then((usercredentials)=>{                                     // like try catch block we use then catch block
       console.log("Successfully Logged In"); 
-      console.log("Successfully Logged In"); 
-      console.log("Successfully Logged In"); 
-      console.log("Successfully Logged In"); 
+      
 
       const user = usercredentials.user;
-      console.log(user);
+      // console.log(user);
       
-      enqueueSnackbar('Log in Successful ',{
-        variant : 'success',
-        autoHideDuration: 6000,
-        anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
-        dense:true, 
-      });
-
-
+      // enqueueSnackbar('Log in Successful ',{
+      //   variant : 'success',
+      //   autoHideDuration: 6000,
+      //   anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
+      //   dense:true, 
+      // });
+      showSnackbar('Log in Successful',3000, 'success');
+      
+      
     })
     .catch((error)=>{
-      console.log(error.code);
+      // console.log(error.code);
       if(error.code === "auth/invalid-credential" || error.code === "auth/invalid-email"){
-        enqueueSnackbar('Invalid Credential',{
-          variant : 'error',
-          autoHideDuration: 3000,
-          anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
-          dense:true, 
-        });
-      }
-      else if(error.code === 'auth/network-request-failed'){
-        enqueueSnackbar('Check your internet connection',{
-          variant : 'error',
-          autoHideDuration: 3000,
-          anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
-          dense:true, 
-        });
+        showSnackbar('Incorrect E-mail or Password',3000, 'success');
+        // enqueueSnackbar('Invalid Credential',{
+          //   variant : 'error',
+          //   autoHideDuration: 3000,
+          //   anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
+          //   dense:true, 
+          // });
+        }
+        else if(error.code === 'auth/network-request-failed'){
+        showSnackbar('Check Your Network Connection',3000, 'success');
+        // enqueueSnackbar('Check your internet connection',{
+        //   variant : 'error',
+        //   autoHideDuration: 3000,
+        //   anchorOrigin:{ horizontal: 'center' , vertical: 'top' },
+        //   dense:true, 
+        // });
       }
     })
   }
@@ -95,14 +97,14 @@ const Login = () => {
     })
   }
 
-  useEffect(()=>{
+  useEffect(()=>{                                         /// observer
     onAuthStateChanged( auth, (user)=>{
       try{
 
         if(user){
           navigate("/");
+          console.log(user);
           const uid = user.uid;
-          console.log(uid);
         }
         else{
           console.log("User is not signed in");
@@ -117,7 +119,7 @@ const Login = () => {
   return (
     <div className=' bg-[#2d2a2a] w-screen h-screen flex justify-center items-center ' >
 
-    <div className='flex  justify-around items-center bg-white   gap-4 w-2/5 h-1/2 '>
+    <div className='flex  justify-around items-center bg-white gap-4 w-2/5 h-1/2 rounded-md'>
       <form onSubmit={(e)=>handleSubmit(e)}
         className='flex flex-col  h-fit w-fit p-5 gap-4' 
       > 
@@ -130,14 +132,14 @@ const Login = () => {
           ></input>
           <input type='submit' className='bg-teal-600 text-white w-full py-1'></input>
           <button onClick={()=>handleGoogleSignin()} 
-            className='text-white justify-center flex items-center gap-2 bg-[#2d2a2a] px-2  border border-white hover:bg-white hover: border hover: border-black  hover:text-black'
+            className='text-white justify-center flex items-center gap-2 bg-[#2d2a2a] px-2 py-1 border hover:bg-transparent  hover:border-black  hover:text-black'
           >
             <FcGoogle size={30} className='text-teal-500'/>
             Sign in
           </button>
       <div className='flex justify-between w-full '>
       
-      <div onClick={()=>navigate('/signup')} className='text-teal-400 flex justify-center gap-2 items-center' >
+      <div onClick={()=>navigate('/signup')} className='text-teal-400 flex justify-center gap-2 items-center cursor-pointer' >
         <FaExternalLinkAlt className=''/>
         Don't have an account?
       </div>
