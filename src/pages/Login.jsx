@@ -19,18 +19,22 @@ import Connect from '../assets/connect.gif';
 import useCustomSnackbar from '../utils/notistack';
 
 
+import { useContext } from 'react';
+import { context } from '../utils/context';
+
 const Login = () => {
-  const showSnackbar = useCustomSnackbar();
+  const { credentials, setCredentials , user , setUser} = useContext(context);
+  const showSnackbar = useCustomSnackbar(); 
   console.log(showSnackbar);
   // const [ status , setStatus ] = useState(0);
   const navigate = useNavigate();
-  const [ credentials , setCredentials ] = useState({
-    email: "",
-    password:"",
-  }) 
+  // const [ credentials , setCredentials ] = useState({
+  //   email: "",
+  //   password:"",
+  // }) 
 
   const handleChange =(e)=>{
-    setCredentials({ ... credentials , [e.target.name] : e.target.value})
+    setCredentials({ ... credentials , [e.target.name] : e.target.value});
     // console.log(credentials);
   }
   
@@ -61,7 +65,7 @@ const Login = () => {
     .catch((error)=>{
       // console.log(error.code);
       if(error.code === "auth/invalid-credential" || error.code === "auth/invalid-email"){
-        showSnackbar('Incorrect E-mail or Password',3000, 'success');
+        showSnackbar('Incorrect E-mail or Password',3000, 'failure');
         // enqueueSnackbar('Invalid Credential',{
           //   variant : 'error',
           //   autoHideDuration: 3000,
@@ -103,8 +107,7 @@ const Login = () => {
 
         if(user){
           navigate("/");
-          console.log(user);
-          const uid = user.uid;
+          setUser(user);
         }
         else{
           console.log("User is not signed in");

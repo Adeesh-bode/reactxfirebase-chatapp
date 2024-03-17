@@ -9,11 +9,14 @@ import { useContext , useState } from 'react';
 import { context } from '../utils/context';
 
 import { db } from '../utils/firebaseconfig';
-import { setDoc , doc } from 'firebase/firestore';
+import { setDoc , doc, arrayUnion } from 'firebase/firestore';
 
 
-const MessageBar = () => {
-  const { credentials } = useContext(context);
+import { updateDoc } from 'firebase/firestore';
+
+
+const MessageBar = ( { live }) => {
+  const { credentials , user } = useContext(context);
   const [ message , setMessage ] = useState(''); 
 
   const handleChange = (e)=>{
@@ -24,11 +27,15 @@ const MessageBar = () => {
     e.preventDefault();
     console.log(message);
 
-    await setDoc(doc(db,"livechat","username2"),{
-      message: message,
-      sender: credentials.username,
-      uid: credentials.uid,
-      timestamp: new Date(),
+
+    // const docRef = doc(db,"liveChat","live"); // better pass this var inside the updateDoc
+    console.log("User:",user);
+
+    await updateDoc(doc(db,"livechat","live"),{
+      data: arrayUnion({
+        senderid: user.uid,
+        message: message,
+      })
     })
     .then(()=>{
       console.log("Message Sent");
@@ -36,6 +43,19 @@ const MessageBar = () => {
     .catch((error)=>{
       console.log(error.message);
     })
+
+    // await setDoc(doc(db,"livechat","Yaha Combined Id"),{
+    //   message: message,
+    //   sender: credentials.username,
+    //   uid: credentials.uid,
+    //   timestamp: new Date(),
+    // })
+    // .then(()=>{
+    //   console.log("Message Sent");
+    // })
+    // .catch((error)=>{
+    //   console.log(error.message);
+    // })
 
     
   }

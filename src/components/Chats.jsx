@@ -1,15 +1,15 @@
-import React,{ useEffect , useState } from 'react';
+import React,{ useEffect , useState } from 'react';     
 
-import { db } from '../utils/firebaseconfig';
-import { getDocs , collection, QuerySnapshot } from 'firebase/firestore';  
+import { db } from '../utils/firebaseconfig';    
+import { collection } from 'firebase/firestore';    
 
-import { onSnapshot } from 'firebase/firestore';
+import { onSnapshot } from 'firebase/firestore';  
 
 const Chats = () => {
-  const [ chats , setChats ] = useState([]);
+  const [ chats , setChats ] = useState([]);    
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "livechat"), (querySnapshot) => {
+    const unsubscribe = onSnapshot(collection(db, "livechat"), (querySnapshot) => {    
       const chatsArray = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
       setChats(chatsArray);
     });
@@ -19,9 +19,9 @@ const Chats = () => {
 
 
   console.log("Chats:", chats);
-  
+
   return (
-    <div className='h-full w-full px-8 py-10 flex flex-col gap-3'>
+    <div className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
         <div className='flex flex-col items-start'>
             <div className='bg-teal-400 w-fit p-3 rounded-md ' >
                 <div className=''>hey alex what's Up?</div>

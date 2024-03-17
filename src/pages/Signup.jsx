@@ -22,7 +22,7 @@ import { useContext } from 'react';
 
 
 const Signup = () => {
-  const { credentials, setCredentials } = useContext(context);
+  const { credentials, setCredentials , user , setUser } = useContext(context);
   const { enqueueSnackbar} = useSnackbar();
   const [ passwordStrength , setPasswordStrength ] = useState(false);
   const navigate = useNavigate();
@@ -151,6 +151,7 @@ const Signup = () => {
           navigate("/");
           // const uid = user.uid;
           // console.log(uid);
+          setUser(user);
 
 
         }

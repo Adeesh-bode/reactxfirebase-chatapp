@@ -17,7 +17,7 @@ const AppContext = ({ children}) =>{
     // const docRef = getDoc(coll);
     // console.log(docRef);
 
-
+    const [ user , setUser ] = useState();
 
     const [ credentials , setCredentials ] = useState({
         email: "",
@@ -36,6 +36,7 @@ const AppContext = ({ children}) =>{
         <context.Provider value={{
             credentials, setCredentials,
             navigate,
+            user, setUser,
             
             }}>
             {children}
