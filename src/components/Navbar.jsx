@@ -36,10 +36,10 @@ const Navbar = () => {
       console.log('Signout Successful');
 
       showSnackbar('Signout Successful',3000,'success');
-
+      
       // enqueueSnackbar('Signout Successful',{
-      //   variant:'success',
-      //   autoHideDuration:3000,
+        //   variant:'success',
+        //   autoHideDuration:3000,
       //   anchorOrigin:{ horizontal:'center', vertical:'top'},
       //   dense:true,
       // })
@@ -48,12 +48,15 @@ const Navbar = () => {
     })
     .catch((error)=>{
       console.log('Error in Signout:',error);
-      enqueueSnackbar('Error Occured',{
-        variant:'Failure',
-        autoHideDuration:3000,
-        anchorOrigin:{ horizontal:'center', vertical:'top'},
-        dense:true,
-      })
+      
+      showSnackbar('Some Error Occured',3000,'error');
+
+      // enqueueSnackbar('Error Occured',{
+      //   variant:'Failure',
+      //   autoHideDuration:3000,
+      //   anchorOrigin:{ horizontal:'center', vertical:'top'},
+      //   dense:true,
+      // })
     })
   }
   

@@ -15,7 +15,7 @@ const Chats = () => {
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "livechat","live"), (docSnapshot) => {    
       // const chatsArray = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })); //.docs sed cause itterating in collection 
-      console.log("Snapshot:",docSnapshot);
+      // console.log("Snapshot:",docSnapshot);
       const chatsArray = docSnapshot.data();
       setChats( chatsArray.data || []);
     });

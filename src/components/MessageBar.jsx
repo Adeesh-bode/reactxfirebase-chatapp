@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Attachment from "../assets/attachment.gif";
 import Microphone from "../assets/microphone.gif";
@@ -9,15 +9,20 @@ import { useContext , useState } from 'react';
 import { context } from '../utils/context';
 
 import { db } from '../utils/firebaseconfig';
-import { setDoc , doc, arrayUnion } from 'firebase/firestore';
+import { getDocs , doc, arrayUnion } from 'firebase/firestore';
 
 
+// import { data } from 'firebase/database';
 import { updateDoc } from 'firebase/firestore';
 
+import { query, collection  } from 'firebase/firestore';
+import { where } from 'firebase/firestore';
 
 const MessageBar = ( { live }) => {
   const { credentials , user } = useContext(context);
   const [ message , setMessage ] = useState(''); 
+
+  const [ userData , setUserData ] = useState({});
 
   const handleChange = (e)=>{
    setMessage(e.target.value); 
@@ -27,14 +32,13 @@ const MessageBar = ( { live }) => {
     e.preventDefault();
     console.log(message);
 
-
     // const docRef = doc(db,"liveChat","live"); // better pass this var inside the updateDoc
     console.log("User:",user);
 
     await updateDoc(doc(db,"livechat","live"),{
       data: arrayUnion({
         senderid: user.uid,
-        senderusername: user.username,
+        senderusername: userData.username,
         message: message,
       })
     })
@@ -59,6 +63,65 @@ const MessageBar = ( { live }) => {
     //   console.log(error.message);
     // })
   }
+
+  // useEffect(()=>{
+  //   const fetchUserData =async ()=>{
+  //     try{
+  //       console.log("User_ID:",user.uid);
+  //       const q = query(collection(db,"users"),where("uid","==",user.uid)); // is used to find the document name
+
+  //       const querySnapshot = await getDocs(q);
+  //       if (querySnapshot.empty) {
+  //         console.log("No matching documents.");
+  //         return;
+  //       }
+  //       else{
+  //         querySnapshot.forEach((doc) => {
+  //           setUserData(doc.data());
+  //           console.log("User Data:::::::::::::::", userData);
+  //         });
+  //       }
+  //     }
+  //     catch(error){
+  //       console.log(error.message);
+  //     } 
+  //     }
+      
+  //     fetchUserData();
+  // })
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        console.log("User_ID:", user.uid);
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+  
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          console.log("No matching documents.");
+          return;
+        } else {
+          querySnapshot.forEach((doc) => {
+            setUserData(doc.data());
+            // Removed the console.log here because userData won't be updated immediately
+          });
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+  
+    fetchUserData();
+  }, []); // Dependency array is empty, so this effect runs only once on mount
+  
+  // Add another useEffect to act on userData updates
+  useEffect(() => {
+    if (userData) {
+      console.log("User Data:::::::::::::::", userData);
+      // Perform any action here that depends on userData being updated
+    }
+  }, [userData]); // This effect depends on userData and runs whenever userData changes
+  
 
   return (
     <div className='h-[60px] w-full border border-t-gray-300 px-3 p-1 flex justify-center items-center'>

@@ -149,12 +149,11 @@ const Signup = () => {
 
         if(user){
           navigate("/");
-          // const uid = user.uid;
-          // console.log(uid);
           setUser(user);
-          console.log("User is logged in:",user);
 
+          // setCredentials({ ...credentials , uid: user.uid });
 
+          // console.log("User Credentials:",credentials );
 
         }
         else{
