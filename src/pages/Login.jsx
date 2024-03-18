@@ -25,7 +25,7 @@ import { context } from '../utils/context';
 const Login = () => {
   const { credentials, setCredentials , user , setUser} = useContext(context);
   const showSnackbar = useCustomSnackbar(); 
-  console.log(showSnackbar);
+  // console.log(showSnackbar);
   // const [ status , setStatus ] = useState(0);
   const navigate = useNavigate();
   // const [ credentials , setCredentials ] = useState({
@@ -108,6 +108,7 @@ const Login = () => {
         if(user){
           navigate("/");
           setUser(user);
+          console.log("User is signed in:",user);
         }
         else{
           console.log("User is not signed in");

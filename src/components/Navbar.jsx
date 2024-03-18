@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 // import { MdAccountCircle } from "react-icons/md";
 // import { IoMdLogIn } from "react-icons/io";
 
@@ -15,28 +15,34 @@ import { FaPowerOff } from "react-icons/fa6";
 import { signOut } from "firebase/auth";
 import { auth } from '../utils/firebaseconfig';
 
-import { useSnackbar } from 'notistack';
+// import { useSnackbar } from 'notistack';
 import { FaTelegramPlane } from "react-icons/fa";
 
-
+import { useContext } from 'react';
+import { context } from '../utils/context';
+import { useSnackbar } from 'notistack';
 
 const Navbar = () => {
+  const { navigate } = useContext(context);
+  const { showSnackbar } = useSnackbar(); // custom Hook :-)
   // const navigate = useNavigate();
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar(); 
-  const navigate = useNavigate();
+  // const { enqueueSnackbar, closeSnackbar } = useSnackbar(); 
+  // const navigate = useNavigate();
   
   const handleSignOut=()=>{
     signOut(auth)
     .then(()=>{
       console.log('Signout Successful');
 
-      enqueueSnackbar('Signout Successful',{
-        variant:'success',
-        autoHideDuration:3000,
-        anchorOrigin:{ horizontal:'center', vertical:'top'},
-        dense:true,
-      })
+      showSnackbar('Signout Successful',3000,'success');
+
+      // enqueueSnackbar('Signout Successful',{
+      //   variant:'success',
+      //   autoHideDuration:3000,
+      //   anchorOrigin:{ horizontal:'center', vertical:'top'},
+      //   dense:true,
+      // })
       
       navigate('/login');
     })

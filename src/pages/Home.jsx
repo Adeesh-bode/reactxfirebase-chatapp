@@ -55,7 +55,7 @@ const Home = () => {
     <div className='w-screen h-screen flex '>
       <Navbar />
       <Users />
-      <ChatRoom user='Technical Lead' />
+      <ChatRoom user='Technical Lead' live={false} />
     </div>
   )
 }

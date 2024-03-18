@@ -44,13 +44,13 @@ const Chats = () => {
       {/* { console.log("Chats DATA:",chats.data)} */}
       {/* { console.log("uid:",user.uid)} */}
       { 
-        chats.map((chat)=>{
+        chats.map((chat,index)=>{
           return(
-            <div className={`flex flex-col ${ chat.senderid === "Ni4IR9wQeOgMdF99Y3SfyjRUv2l2" ? "items-end" : "items-start"} `}>
+            <div className={`flex flex-col ${ chat?.senderid === user?.uid ? "items-end" : "items-start"} `} key={index}>
               <div className='bg-teal-400 w-fit p-3 rounded-md ' >
                   <div className=''>{ chat.message }</div>
               </div>    
-              <div className='text-xs'>{ chat.senderid }</div>
+              <div className='text-xs'>{ chat.senderusername }</div>
               <div className='text-xs'>Today 8:00am</div>
           </div>
         )

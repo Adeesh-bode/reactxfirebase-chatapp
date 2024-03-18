@@ -152,6 +152,8 @@ const Signup = () => {
           // const uid = user.uid;
           // console.log(uid);
           setUser(user);
+          console.log("User is logged in:",user);
+
 
 
         }
