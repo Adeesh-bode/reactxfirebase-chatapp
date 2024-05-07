@@ -1,17 +1,16 @@
 import ChatRoomNavbar from './ChatRoomNavbar'
 import MessageBar from './MessageBar'
-import Chats from './Chats'
+import LiveChats from './LiveChats'
 
-
-const ChatRoom = (  ) => {
+const Global = ( ) => {
   return (
     <div className='h-screen w-full bg-white flex flex-col justify-between'>
-        <ChatRoomNavbar username='Bi-chat' />
-        <Chats />
-        <MessageBar />
+        <ChatRoomNavbar username='Global Chat' />
+        <LiveChats /> 
+        <MessageBar  />
     </div>
 
   )
 }
 
-export default ChatRoom;
+export default Global;

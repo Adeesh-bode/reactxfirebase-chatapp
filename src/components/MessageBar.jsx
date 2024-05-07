@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect} from 'react';
 
 import Attachment from "../assets/attachment.gif";
 import Microphone from "../assets/microphone.gif";

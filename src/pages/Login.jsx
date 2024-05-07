@@ -145,12 +145,12 @@ const Login = () => {
       
       <div onClick={()=>navigate('/signup')} className='text-teal-400 flex justify-center gap-2 items-center cursor-pointer' >
         <FaExternalLinkAlt className=''/>
-        Don't have an account?
+        Don&apos;t have an account?
       </div>
       </div>
       </form>
       <div className='w-fit h-fit  flex flex-col justify-between items-center'> 
-        <div>Let's Connect</div>
+        <div>Let&apos;s Connect</div>
         <img src={Connect} alt='interactive-img' />
       </div>
       

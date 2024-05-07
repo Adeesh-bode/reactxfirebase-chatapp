@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import { useState , useEffect } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';   // 1. import the function to be used
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,9 @@ import { db } from '../utils/firebaseconfig';
 
 import { context } from '../utils/context';
 import { useContext } from 'react';
+
+import { FaExternalLinkAlt } from "react-icons/fa";
+
 
 
 const Signup = () => {
@@ -192,11 +195,15 @@ const Signup = () => {
           >
             <FcGoogle size={30} className='text-teal-500'/>
             Sign in
-          </button>      
+          </button>     
+          <div onClick={()=>navigate('/login')} className='text-teal-400 flex justify-center gap-2 items-center cursor-pointer' >
+            <FaExternalLinkAlt className=''/>
+            Already have an account?
+          </div> 
           
       </form>
       <div className='w-fit h-fit  flex flex-col justify-between items-center'> 
-        <div>Let's Connect</div>
+        <div>Let&apos;s Connect</div>
         <img src={Connect} alt='interactive-img' />
       </div>
 

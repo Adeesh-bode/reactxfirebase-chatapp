@@ -17,8 +17,15 @@ import { collection } from 'firebase/firestore';
 
 import { db } from '../utils/firebaseconfig';
 
+import DashboardSection from '../components/Dashboard';
+import { useContext } from 'react';
+import { context } from '../utils/context';
+
+
 
 const Home = () => {
+  const { dashboard } = useContext(context);
+
   const navigate = useNavigate();
 
   const fetchData = async ()=>{
@@ -55,7 +62,10 @@ const Home = () => {
     <div className='w-screen h-screen flex '>
       <Navbar />
       <Users />
+      {
+        dashboard? <DashboardSection /> :
       <ChatRoom user='Technical Lead' live={false} />
+      }
     </div>
   )
 }

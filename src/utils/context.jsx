@@ -18,6 +18,7 @@ const AppContext = ({ children}) =>{
     // console.log(docRef);
 
     const [ user , setUser ] = useState();
+    const [ dashboard , setDashboard] = useState(true);
 
     const [ credentials , setCredentials ] = useState({
         email: "",
@@ -37,6 +38,7 @@ const AppContext = ({ children}) =>{
             credentials, setCredentials,
             navigate,
             user, setUser,
+            dashboard , setDashboard
             
             }}>
             {children}
