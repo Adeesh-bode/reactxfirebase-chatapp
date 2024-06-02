@@ -1,3 +1,5 @@
+/// login and signup by google wale user users k db mai nhi  aa rahe...
+
 import { useState , useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';   // 1. import the function to be used
 import { onAuthStateChanged } from 'firebase/auth';

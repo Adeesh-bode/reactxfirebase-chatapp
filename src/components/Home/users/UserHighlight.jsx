@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { context } from '../../../utils/context';
 const UserHighlight = ({ username ='GFG President' , status='online' ,uid }) => {
     const { setChatWith , setDashboard} = useContext(context);
+    
     const toPersonalChat = ()=>{
         setChatWith(uid);
         setDashboard(false);

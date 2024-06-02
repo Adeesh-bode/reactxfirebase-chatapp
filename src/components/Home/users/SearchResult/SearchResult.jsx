@@ -1,3 +1,4 @@
+//todo: issue whenever I click other userHiglight the chats components is not rerendered some chats with other person are still there
 import UserHighlight from "../UserHighlight"
 
 const SearchResult = ( { users }  ) => {

@@ -13,6 +13,6 @@ const ProfilePage = () => {
       <p>Phone Number: user.phoneNumber</p>
     </div>
   );
-}
+};
 
 export default ProfilePage;

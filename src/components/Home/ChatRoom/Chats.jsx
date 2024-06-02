@@ -1,45 +1,68 @@
-import { useEffect , useState } from 'react';     
-import { db } from '../../../utils/firebaseconfig';    
-import { collection } from 'firebase/firestore';    
-import { onSnapshot } from 'firebase/firestore';  
+import { useEffect, useState, useRef } from 'react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../../utils/firebaseconfig';
 
-const Chats = () => {
-  const [ chats , setChats ] = useState([]);    
+const Chats = ({ userId, chatWithId }) => {
+  const [chats, setChats] = useState([]);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "livechat"), (querySnapshot) => {    
-      const chatsArray = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      setChats(chatsArray);
+    const code1 = userId + chatWithId;
+    const code2 = chatWithId + userId;
+
+    // Create a reference to the chat document
+    let docRef1 = doc(db, "encryptedchats", code1);
+    let docRef2 = doc(db, "encryptedchats", code2);
+
+    // Set up a listener for real-time updates
+    const unsubscribe1 = onSnapshot(docRef1, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setChats(data.message);
+      }
     });
 
-    return () => unsubscribe();
-  }, []); 
+    const unsubscribe2 = onSnapshot(docRef2, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setChats(data.message);
+      }
+    });
 
-  // console.log("Chats:", chats);
+    // Clean up the listener on component unmount
+    return () => {
+      unsubscribe1();
+      unsubscribe2();
+    };
+  }, [userId, chatWithId]);
+
+  useEffect(() => {
+    // Scroll to the bottom of the chat container when chats change
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [chats]);
+
+  const formatTimestamp = (timestamp) => {
+    if (timestamp?.seconds) {
+      const date = new Date(timestamp.seconds * 1000);
+      return date.toLocaleString(); // Adjust the format as needed
+    }
+    return "no-time";
+  };
 
   return (
-    <div className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
-        <div className='flex flex-col items-start'>
-            <div className='bg-teal-400 w-fit p-3 rounded-md ' >
-                <div className=''>hey alex what&apos;s Up?</div>
-            </div>    
-            <div className='text-xs'>Yesterday 2:00pm</div>
+    <div ref={chatContainerRef} className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
+      {chats.map((chat, index) => (
+        <div key={index} className={`flex flex-col ${chat.sender === userId ? "items-end" : "items-start"}`}>
+          <div className='bg-teal-400 w-fit p-3 rounded-md'>
+            <div>{chat.message}</div>
+          </div>
+          <div className='text-xs'>{formatTimestamp(chat.timestamp)}</div>
         </div>
-        <div className='flex flex-col items-end'>
-            <div className='bg-teal-400 w-fit p-3 rounded-md ' >
-                <div className=''>I am fine. How are you?</div>
-            </div>    
-            <div className='text-xs'>Today 8:00am</div>
-        </div>
-        <div className='flex flex-col items-start'>
-            <div className='bg-teal-400 w-fit p-3 rounded-md ' >
-                <div className=''>As always Happy!!!</div>
-            </div>    
-            <div className='text-xs'>Today 8:01am</div>
-        </div>
-          
+      ))}
     </div>
-  )
-}
+  );
+};
 
 export default Chats;

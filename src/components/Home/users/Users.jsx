@@ -1,4 +1,3 @@
-
 import Search from '../../../assets/search.gif';
 import RecentChats from './RecentChats/RecentsChats';
 import SearchResult from './SearchResult/SearchResult';
