@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import { useState , useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';   // 1. import the function to be used
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,7 @@ import { useContext } from 'react';
 import { context } from '../utils/context';
 
 const Login = () => {
-  const { credentials, setCredentials , user , setUser} = useContext(context);
+  const { credentials, setCredentials , user , setUser, setShowNavbar} = useContext(context);
   const showSnackbar = useCustomSnackbar(); 
   // console.log(showSnackbar);
   // const [ status , setStatus ] = useState(0);
@@ -47,7 +47,7 @@ const Login = () => {
     await signInWithEmailAndPassword(auth , email , password)  // this function returns a promise can say response which is useful for ack and data
     .then((usercredentials)=>{                                     // like try catch block we use then catch block
       console.log("Successfully Logged In"); 
-      
+      setShowNavbar(true);
 
       const user = usercredentials.user;
       // console.log(user);
@@ -63,6 +63,8 @@ const Login = () => {
       
     })
     .catch((error)=>{
+      setShowNavbar(false);
+      
       // console.log(error.code);
       if(error.code === "auth/invalid-credential" || error.code === "auth/invalid-email"){
         showSnackbar('Incorrect E-mail or Password',3000, 'failure');
@@ -89,12 +91,22 @@ const Login = () => {
   const handleGoogleSignin = async ()=>{
     await signInWithPopup(auth, provider)
     .then((result)=>{
+      showSnackbar('Log in Successful',3000, 'success');
+      setShowNavbar(true);
       console.log("Successfully Logged in using Google");
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      const user = result.user;
+      const userData = result.user;
+
+      setUser(userData);
+
+      // console.log("GOOOOGLE:",userData);
+      // console.log("GOOOOGLEUID:",userData?.uid);
+      
+
     })
     .catch((error)=>{
+      setShowNavbar(false);
 
       console.log(error.code);
       console.log(error.message);
@@ -102,13 +114,10 @@ const Login = () => {
   }
 
   useEffect(()=>{                                         /// observer
-    onAuthStateChanged( auth, (user)=>{
+    onAuthStateChanged( auth, (currentuser)=>{
       try{
-
-        if(user){
+        if(currentuser){
           navigate("/");
-          setUser(user);
-          console.log("User is signed in:",user);
         }
         else{
           console.log("User is not signed in");
@@ -119,6 +128,11 @@ const Login = () => {
       }
     })
   },[])
+  console.log("User is signed in:::::::::::::::::::::::::::::::::::\n",user);
+  console.log("User is signed in:",user);
+  console.log("User is signed in:",user);
+  console.log("User is signed in:",user);
+  console.log("User is signed in:",user);
 
   return (
     <div className=' bg-[#2d2a2a] w-screen h-screen flex justify-center items-center ' >

@@ -25,7 +25,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 
 
 const Signup = () => {
-  const { credentials, setCredentials , user , setUser } = useContext(context);
+  const { credentials, setCredentials , user , setUser , setShowNavbar } = useContext(context);
   const { enqueueSnackbar} = useSnackbar();
   const [ passwordStrength , setPasswordStrength ] = useState(false);
   const navigate = useNavigate();
@@ -51,7 +51,8 @@ const Signup = () => {
     const { email,password } = credentials;
     await createUserWithEmailAndPassword(auth , email , password)  // this function returns a promise can say response which is useful for ack and data
     .then(async (result)=>{                                     // like try catch block we use then catch block
-      
+      setShowNavbar(true);
+
       // notify
       enqueueSnackbar('Sign up Successful ',{
         variant:'success',
@@ -82,7 +83,7 @@ const Signup = () => {
     })
     .catch((error) => {
         console.error("Error writing document: ", error);
-    });
+      });
 
 
 
@@ -90,6 +91,7 @@ const Signup = () => {
       // console.log(user);
     })
     .catch((error)=>{
+      setShowNavbar(false);
       // console.log("Error Code:", error.code);
       // console.log("Error Message:", error.message);
       if(error.code === 'auth/network-request-failed'){
@@ -133,12 +135,15 @@ const Signup = () => {
   const handleGoogleSignin = async ()=>{
     await signInWithPopup(auth, provider)
     .then((result)=>{
+      setShowNavbar(true);
+      
       console.log("Successfully Logged in using Google");
       const credential = GoogleAuthProvider.credentialFromResult(result);
       // const token = credential.accessToken;
       // const user = result.user;
     })
     .catch((error)=>{
+      setShowNavbar(false);
 
       console.log(error.code);
       console.log(error.message);

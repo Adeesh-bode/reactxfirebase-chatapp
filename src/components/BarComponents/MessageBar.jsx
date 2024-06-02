@@ -1,14 +1,14 @@
-import React, { useEffect} from 'react';
+import { useEffect} from 'react';
 
-import Attachment from "../assets/attachment.gif";
-import Microphone from "../assets/microphone.gif";
+import Attachment from "../../assets/attachment.gif";
+import Microphone from "../../assets/microphone.gif";
 // import Sent from "../assets/paper-plane.gif";
 import { FaTelegramPlane } from "react-icons/fa";
 
 import { useContext , useState } from 'react';
-import { context } from '../utils/context';
+import { context } from '../../utils/context';
 
-import { db } from '../utils/firebaseconfig';
+import { db } from '../../utils/firebaseconfig';
 import { getDocs , doc, arrayUnion } from 'firebase/firestore';
 
 
@@ -18,8 +18,8 @@ import { updateDoc } from 'firebase/firestore';
 import { query, collection  } from 'firebase/firestore';
 import { where } from 'firebase/firestore';
 
-const MessageBar = ( { live }) => {
-  const { credentials , user } = useContext(context);
+const MessageBar = ( ) => {
+  const { user } = useContext(context);
   const [ message , setMessage ] = useState(''); 
 
   const [ userData , setUserData ] = useState({});

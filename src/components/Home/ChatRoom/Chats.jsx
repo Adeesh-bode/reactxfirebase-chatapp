@@ -1,8 +1,6 @@
-import React,{ useEffect , useState } from 'react';     
-
-import { db } from '../utils/firebaseconfig';    
+import { useEffect , useState } from 'react';     
+import { db } from '../../../utils/firebaseconfig';    
 import { collection } from 'firebase/firestore';    
-
 import { onSnapshot } from 'firebase/firestore';  
 
 const Chats = () => {
@@ -17,14 +15,13 @@ const Chats = () => {
     return () => unsubscribe();
   }, []); 
 
-
-  console.log("Chats:", chats);
+  // console.log("Chats:", chats);
 
   return (
     <div className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
         <div className='flex flex-col items-start'>
             <div className='bg-teal-400 w-fit p-3 rounded-md ' >
-                <div className=''>hey alex what's Up?</div>
+                <div className=''>hey alex what&apos;s Up?</div>
             </div>    
             <div className='text-xs'>Yesterday 2:00pm</div>
         </div>
@@ -45,4 +42,4 @@ const Chats = () => {
   )
 }
 
-export default Chats
+export default Chats;

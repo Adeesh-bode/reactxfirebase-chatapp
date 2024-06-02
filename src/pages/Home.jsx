@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import { useEffect } from 'react';
 
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../utils/firebaseconfig';
 import { useNavigate } from 'react-router-dom';
 
 
-import ChatRoom from '../components/ChatRoom';
-import Users from '../components/Users';
+import ChatRoom from '../components/Home/ChatRoom/ChatRoom';
+import Users from '../components/Home/users/Users';
 
 
 
@@ -17,24 +16,24 @@ import { collection } from 'firebase/firestore';
 
 import { db } from '../utils/firebaseconfig';
 
-import DashboardSection from '../components/Dashboard';
+import DashboardSection from '../components/Home/Dashboard/Dashboard';
 import { useContext } from 'react';
 import { context } from '../utils/context';
 
 
 
 const Home = () => {
-  const { dashboard } = useContext(context);
+  const { dashboard , user } = useContext(context);
 
   const navigate = useNavigate();
 
-  const fetchData = async ()=>{
+  // const fetchData = async ()=>{
 
-    const coll = getDocs(collection(db, 'users'));  
-    console.log("Collection:",coll);
+  //   const coll = getDocs(collection(db, 'users'));  
+  //   console.log("Collection:",coll);
    
-    return coll;
-  }
+  //   return coll;
+  // }
 
 
 
@@ -45,7 +44,7 @@ const Home = () => {
           // navigate("/");
           // const uid = user.uid;
           // console.log(uid);
-          fetchData();
+          // fetchData();
         }
         else{
           navigate("/login");
@@ -56,15 +55,17 @@ const Home = () => {
         console.log(error.message)
       }
     })
-  },[])
+  },[]);
 
+  // console.log("OUr User Daata:", user);
+  // console.log("OUr User Daata:", user);
+  // console.log("OUr User Daata:", user);
+  // console.log("OUr User Daata:", user);
   return (
-    <div className='w-screen h-screen flex '>
-      <Navbar />
+    <div className='w-full flex '>
       <Users />
       {
-        dashboard? <DashboardSection /> :
-      <ChatRoom user='Technical Lead' live={false} />
+        dashboard? <DashboardSection /> : <ChatRoom />
       }
     </div>
   )

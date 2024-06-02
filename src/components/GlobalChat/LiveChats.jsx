@@ -1,12 +1,11 @@
-import React,{ useEffect , useState } from 'react';     
 
-import { db } from '../utils/firebaseconfig';    
-import { collection ,doc } from 'firebase/firestore';    
+import { db } from '../../utils/firebaseconfig';    
+import { doc } from 'firebase/firestore';    
 
 import { onSnapshot } from 'firebase/firestore';  
 
-import { useContext } from 'react';
-import { context } from '../utils/context';
+import { useContext , useState , useEffect } from 'react';
+import { context } from '../../utils/context';
 
 const Chats = () => {
   const { user } = useContext(context);

@@ -1,13 +1,14 @@
-import React from 'react'
 
-import FriendImg from '../assets/friend.jpg'
+import FriendImg from '../../assets/friend.jpg'
 
-import Phone from '../assets/phone.gif';
-import Video from '../assets/video.gif';
-import Menu from '../assets/menu.gif';
+import Phone from '../../assets/phone.gif';
+import Video from '../../assets/video.gif';
+import Menu from '../../assets/menu.gif';
 
 
 const ChatRoomNavbar = ({ username }) => {
+  
+
   return (
     <div className='h-[90px] w-full border border-b-gray-300 px-3  flex justify-between items-center'>
         <div className=' flex gap-2 items-center'>

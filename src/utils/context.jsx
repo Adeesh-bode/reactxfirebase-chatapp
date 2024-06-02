@@ -2,12 +2,6 @@ import { createContext , useState }  from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-
-import { getDoc } from 'firebase/firestore';
-
-import { collection } from 'firebase/firestore';
-
-
 export const context = createContext();
 const AppContext = ({ children}) =>{
 
@@ -16,7 +10,8 @@ const AppContext = ({ children}) =>{
 
     // const docRef = getDoc(coll);
     // console.log(docRef);
-
+    const [ chatWith , setChatWith ] = useState('');
+    const [ showNavbar , setShowNavbar ] = useState(false);
     const [ user , setUser ] = useState();
     const [ dashboard , setDashboard] = useState(true);
 
@@ -34,12 +29,13 @@ const AppContext = ({ children}) =>{
       const navigate = useNavigate();
 
     return(
-        <context.Provider value={{
+        <context.Provider value={{ 
             credentials, setCredentials,
             navigate,
             user, setUser,
-            dashboard , setDashboard
-            
+            dashboard , setDashboard,
+            showNavbar , setShowNavbar,
+            chatWith, setChatWith
             }}>
             {children}
         </context.Provider>

@@ -28,7 +28,7 @@ const Quotes = () => {
       <p className="text-right text-xs text-gray-600">— {author}</p>
       <button 
         onClick={fetchQuote}
-        className=" w-full px-3 py-1 bg-teal-300 text-white rounded hover:border-teal-500 hover:bg-white hover:text-black transition duration-200">
+        className=" w-full px-3 py-1 bg-teal-500 text-white rounded hover:border-teal-500 hover:bg-white hover:text-black transition duration-200">
         New Quote
       </button>
     </div>
