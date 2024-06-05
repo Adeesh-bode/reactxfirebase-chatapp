@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { collection, doc, arrayUnion, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebaseconfig';
-
 import Attachment from "../../assets/attachment.gif";
 import Microphone from "../../assets/microphone.gif";
 
-const MessageBar = ({ userId }) => {
+const MessageBar = ({ userdata }) => {
   const [message, setMessage] = useState('');
   const [userData, setUserData] = useState({});
 
@@ -17,6 +16,15 @@ const MessageBar = ({ userId }) => {
   const sendMessage = async (e) => {
     e.preventDefault();
     console.log(message);
+
+    // Check if userId and userData.username are defined
+    if (!userId ) {
+      console.log("User ID is undefined.");
+      return;
+    }
+    else if (!userData.username) {  
+      console.log("username is undefined.");
+    }
 
     try {
       await updateDoc(doc(db, "livechat", "live"), {
@@ -57,6 +65,8 @@ const MessageBar = ({ userId }) => {
     fetchUserData();
   }, [userId]); // Depend on userId
 
+
+  console.log("|||||||||||||||||||", userId);
   return (
     <div className='h-[60px] w-full border border-t-gray-300 px-3 p-1 flex justify-center items-center'>
       <div className='w-2/3 flex justify-center items-center gap-2 rounded-md border border-gray-200 p-2 '>
