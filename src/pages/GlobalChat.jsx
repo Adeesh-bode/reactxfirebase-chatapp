@@ -1,3 +1,6 @@
+// todofeature: anonpmous global chat message optin in message bar  //  username goes anpnymous
+
+
 import ChatRoomNavbar from '../components/GlobalChat/GlobalNavbar';
 import MessageBar from '../components/GlobalChat/GlobalMessagebar';
 import LiveChats from '../components/GlobalChat/LiveChats';

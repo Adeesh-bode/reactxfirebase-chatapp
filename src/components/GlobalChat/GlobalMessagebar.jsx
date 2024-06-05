@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
-import { collection, doc, arrayUnion, query, where, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, doc, arrayUnion, updateDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebaseconfig';
 import Attachment from "../../assets/attachment.gif";
 import Microphone from "../../assets/microphone.gif";
@@ -8,6 +8,7 @@ import Microphone from "../../assets/microphone.gif";
 const MessageBar = ({ userId }) => {
   const [message, setMessage] = useState('');
   const [userData, setUserData] = useState({});
+  const [anonymous, setAnonymous] = useState(false); 
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -16,19 +17,21 @@ const MessageBar = ({ userId }) => {
   const sendMessage = async () => {
     console.log(message);
 
-    // userId and userData.username are defined or not
-    if (!userId || !userData.username) {
-      console.log("User ID or username is undefined.");
+    if (!userId) {
+      console.log("User ID is undefined.");
       return;
     }
 
-    // todo: check for update parameters
-    
+    let senderUsername = userData.username;
+    if (anonymous) {
+      senderUsername = "Anonymous";
+    }
+
     try {
       await updateDoc(doc(db, "livechat", "live"), {
         data: arrayUnion({
           senderid: userId,
-          senderusername: userData.username,
+          senderusername: senderUsername,
           message: message,
         })
       });
@@ -50,17 +53,14 @@ const MessageBar = ({ userId }) => {
     const fetchUserData = async () => {
       try {
         console.log("User_ID:", userId);
-        const q = query(collection(db, "users"), where("uid", "==", userId));
-
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          querySnapshot.forEach((doc) => {
-            console.log("---------------------------------------------");
-            console.log("User Data---------", doc.data());
-            setUserData(doc.data());
-          });
+        const userDoc = await doc(db, "users", userId).get(); 
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          console.log("---------------------------------------------");
+          console.log("User Data---------", userData);
+          setUserData(userData);
         } else {
-          console.log("No matching documents.");
+          console.log("User document not found.");
         }
       } catch (error) {
         console.log(error.message);
@@ -68,9 +68,7 @@ const MessageBar = ({ userId }) => {
     };
 
     fetchUserData();
-  }, [userId]); //  on userId change
-
-  console.log("User:", userId);
+  }, [userId]); // Depend on userId
 
   return (
     <div className='h-[60px] w-full border border-t-gray-300 px-3 p-1 flex justify-center items-center'>
@@ -81,6 +79,7 @@ const MessageBar = ({ userId }) => {
         <div className='h-8 w-8 bg-teal-500 rounded-full flex justify-center items-center'>
           <FaTelegramPlane className='h-6 w-6 text-white' onClick={sendMessage} />
         </div>
+        <button onClick={() => setAnonymous(!anonymous)} className="bg-gray-200 text-gray-800 px-2 py-1 rounded-md focus:outline-none w-auto h-">{anonymous ? "User" : "Anonymously"}</button>
       </div>
     </div>
   );
