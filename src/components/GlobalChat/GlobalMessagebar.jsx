@@ -18,11 +18,8 @@ import { updateDoc } from 'firebase/firestore';
 import { query, collection  } from 'firebase/firestore';
 import { where } from 'firebase/firestore';
 
-const MessageBar = ( ) => {
-  const { user } = useContext(context);
+const MessageBar = (  ) => {
   const [ message , setMessage ] = useState(''); 
-
-  const [ userData , setUserData ] = useState({});
 
   const handleChange = (e)=>{
    setMessage(e.target.value); 
@@ -90,37 +87,37 @@ const MessageBar = ( ) => {
   //     fetchUserData();
   // })
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        console.log("User_ID:", user.uid);
-        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       console.log("User_ID:", user.uid);
+  //       const q = query(collection(db, "users"), where("uid", "==", user.uid));
   
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          console.log("No matching documents.");
-          return;
-        } else {
-          querySnapshot.forEach((doc) => {
-            setUserData(doc.data());
-            // Removed the console.log here because userData won't be updated immediately
-          });
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
+  //       const querySnapshot = await getDocs(q);
+  //       if (querySnapshot.empty) {
+  //         console.log("No matching documents.");
+  //         return;
+  //       } else {
+  //         querySnapshot.forEach((doc) => {
+  //           setUserData(doc.data());
+  //           // Removed the console.log here because userData won't be updated immediately
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
   
-    fetchUserData();
-  }, []); // Dependency array is empty, so this effect runs only once on mount
+  //   fetchUserData();
+  // }, []); // Dependency array is empty, so this effect runs only once on mount
   
-  // Add another useEffect to act on userData updates
-  useEffect(() => {
-    if (userData) {
-      console.log("User Data:::::::::::::::", userData);
-      // Perform any action here that depends on userData being updated
-    }
-  }, [userData]); // This effect depends on userData and runs whenever userData changes
+  // // Add another useEffect to act on userData updates
+  // useEffect(() => {
+  //   if (userData) {
+  //     console.log("User Data:::::::::::::::", userData);
+  //     // Perform any action here that depends on userData being updated
+  //   }
+  // }, [userData]); // This effect depends on userData and runs whenever userData changes
   
 
   return (
