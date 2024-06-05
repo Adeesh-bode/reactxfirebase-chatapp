@@ -4,11 +4,9 @@ import { doc } from 'firebase/firestore';
 
 import { onSnapshot } from 'firebase/firestore';  
 
-import { useContext , useState , useEffect } from 'react';
-import { context } from '../../utils/context';
+import { useState , useEffect } from 'react';
 
-const Chats = () => {
-  const { user } = useContext(context);
+const Chats = ({ userId}) => {
   const [ chats , setChats ] = useState([]);    
 
   useEffect(() => {
@@ -45,7 +43,7 @@ const Chats = () => {
       { 
         chats.map((chat,index)=>{
           return(
-            <div className={`flex flex-col ${ chat?.senderid === user?.uid ? "items-end" : "items-start"} `} key={index}>
+            <div className={`flex flex-col ${ chat?.senderid === userId ? "items-end" : "items-start"} `} key={index}>
               <div className='bg-teal-400 w-fit p-3 rounded-md ' >
                   <div className=''>{ chat.message }</div>
               </div>    

@@ -17,4 +17,4 @@ const SearchResult = ( { users }  ) => {
   )
 }
 
-export default SearchResult;
+export default SearchResult; 
