@@ -4,11 +4,12 @@ import { doc } from 'firebase/firestore';
 
 import { onSnapshot } from 'firebase/firestore';  
 
-import { useState , useEffect } from 'react';
+import { useState , useEffect , useRef } from 'react';
 
 const Chats = ({ userId}) => {
   console.log("44444444444444:",userId);
-  const [ chats , setChats ] = useState([]);    
+  const [ chats , setChats ] = useState([]);   
+  const globalchatsRef = useRef(null); 
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "livechat","live"), (docSnapshot) => {    
@@ -24,8 +25,14 @@ const Chats = ({ userId}) => {
 
   console.log("Chats:", chats);
 
+  useEffect(() => {
+    if (globalchatsRef.current) {
+      globalchatsRef.current.scrollTop = globalchatsRef.current.scrollHeight;
+    }
+  }, [chats]);
+
   return (
-    <div className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
+    <div ref={globalchatsRef}  className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
         {/* <div className='flex flex-col items-start'>
             <div className='bg-teal-400 w-fit p-3 rounded-md ' >
                 <div className=''>hey alex what's Up?</div>

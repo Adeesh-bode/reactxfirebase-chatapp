@@ -29,7 +29,6 @@ const Chats = ({ userId, chatWithId }) => {
       }
     });
 
-    // Clean up the listener on component unmount
     return () => {
       unsubscribe1();
       unsubscribe2();
@@ -37,7 +36,7 @@ const Chats = ({ userId, chatWithId }) => {
   }, [userId, chatWithId]);
 
   useEffect(() => {
-    // Scroll to the bottom of the chat container when chats change
+    // Scroll to the bottom of the chats
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
@@ -46,7 +45,7 @@ const Chats = ({ userId, chatWithId }) => {
   const formatTimestamp = (timestamp) => {
     if (timestamp?.seconds) {
       const date = new Date(timestamp.seconds * 1000);
-      return date.toLocaleString(); // Adjust the format as needed
+      return date.toLocaleString(); // has to be formatted
     }
     return "no-time";
   };
