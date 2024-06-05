@@ -13,18 +13,15 @@ const MessageBar = ({ userId }) => {
     setMessage(e.target.value);
   };
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
+  const sendMessage = async () => {
     console.log(message);
 
-    // Check if userId and userData.username are defined
-    if (!userId ) {
-      console.log("User ID is undefined.");
+    // userId and userData.username are defined or not
+    if (!userId || !userData.username) {
+      console.log("User ID or username is undefined.");
       return;
     }
-    else if (!userData.username) {  
-      console.log("username is undefined.");
-    }
+
 
     try {
       await updateDoc(doc(db, "livechat", "live"), {
@@ -38,6 +35,13 @@ const MessageBar = ({ userId }) => {
       setMessage('');
     } catch (error) {
       console.log(error.message);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
     }
   };
 
@@ -63,18 +67,18 @@ const MessageBar = ({ userId }) => {
     };
 
     fetchUserData();
-  }, [userId]); // Depend on userId
+  }, [userId]); //  on userId change
 
+  console.log("User:", userId);
 
-  console.log("|||||||||||||||||||", userId);
   return (
     <div className='h-[60px] w-full border border-t-gray-300 px-3 p-1 flex justify-center items-center'>
       <div className='w-2/3 flex justify-center items-center gap-2 rounded-md border border-gray-200 p-2 '>
         <img src={Attachment} alt='interactive Attachment icon' className='h-8 w-8 mx-3' />
-        <input type='text' placeholder='Type a message here ' value={message} onChange={(e) => handleChange(e)} name='message' className='w-2/3 outline-none px-3 py-1 text-gray-800 border-none bg-transparent' />
+        <input type='text' placeholder='Type a message here ' value={message} onChange={(e) => handleChange(e)} onKeyDown={handleKeyDown} name='message' className='w-2/3 outline-none px-3 py-1 text-gray-800 border-none bg-transparent' />
         <img src={Microphone} alt='interactive Microphone icon' className='h-8 w-8 mx-3' />
         <div className='h-8 w-8 bg-teal-500 rounded-full flex justify-center items-center'>
-          <FaTelegramPlane className='h-6 w-6 text-white' onClick={(e) => sendMessage(e)} onDragEnter={(e) => sendMessage(e)} />
+          <FaTelegramPlane className='h-6 w-6 text-white' onClick={sendMessage} />
         </div>
       </div>
     </div>
