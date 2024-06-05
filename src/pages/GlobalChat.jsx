@@ -16,7 +16,7 @@ const GlobalChat = () => {
       onAuthStateChanged(auth, async (user) => {
         try {
           if (user) {
-            console.log("User:", user);
+            // console.log("User:||||||||||||||||||", user);
             setUser(user);
           } else {
             navigate("/login");
@@ -31,13 +31,15 @@ const GlobalChat = () => {
     fetchUserId();
   }, [navigate]);
 
-  console.log("User:", user);
+  // console.log("User:", user);
+  // console.log("UserIDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD:", user?.uid);
+
 
   return (
     <div className='h-screen w-full bg-white flex flex-col justify-between'>
       <ChatRoomNavbar />
-      <LiveChats userId={user.uid} />
-      <MessageBar user={user} /> {/* Pass user data to MessageBar component */}
+      <LiveChats userId={user?.uid} />
+      <MessageBar userId={user?.uid} /> {/* Pass user data to MessageBar component */}
     </div>
   );
 };

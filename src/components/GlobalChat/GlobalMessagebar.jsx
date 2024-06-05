@@ -5,7 +5,7 @@ import { db } from '../../utils/firebaseconfig';
 import Attachment from "../../assets/attachment.gif";
 import Microphone from "../../assets/microphone.gif";
 
-const MessageBar = ({ userdata }) => {
+const MessageBar = ({ userId }) => {
   const [message, setMessage] = useState('');
   const [userData, setUserData] = useState({});
 

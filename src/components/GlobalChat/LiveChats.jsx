@@ -7,6 +7,7 @@ import { onSnapshot } from 'firebase/firestore';
 import { useState , useEffect } from 'react';
 
 const Chats = ({ userId}) => {
+  console.log("44444444444444:",userId);
   const [ chats , setChats ] = useState([]);    
 
   useEffect(() => {
