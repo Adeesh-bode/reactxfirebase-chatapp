@@ -22,7 +22,8 @@ const MessageBar = ({ userId }) => {
       return;
     }
 
-
+    // todo: check for update parameters
+    
     try {
       await updateDoc(doc(db, "livechat", "live"), {
         data: arrayUnion({
