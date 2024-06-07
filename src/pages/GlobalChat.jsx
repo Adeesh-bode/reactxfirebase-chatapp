@@ -34,6 +34,8 @@ const GlobalChat = () => {
     fetchUserId();
   }, [navigate]);
 
+  
+
   // console.log("User:", user);
   // console.log("UserIDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD:", user?.uid);
 

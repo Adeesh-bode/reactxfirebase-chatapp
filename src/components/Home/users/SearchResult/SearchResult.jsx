@@ -1,5 +1,3 @@
-// SearchResult Component
-
 import UserHighlight from "../UserHighlight";
 
 const SearchResult = ({ users }) => {

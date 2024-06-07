@@ -21,6 +21,7 @@ import { context } from '../utils/context';
 import { useContext } from 'react';
 
 import { FaExternalLinkAlt } from "react-icons/fa";
+import RecentsChats from '../components/Home/users/RecentChats/RecentsChats';
 
 
 
@@ -75,6 +76,7 @@ const Signup = () => {
         email: credentials.email,
         password: credentials.password,
         status :  true,
+        RecentsChatsWith:[],
         // lastactive : new Date().toLocaleString(),
       })
       .then(() => {

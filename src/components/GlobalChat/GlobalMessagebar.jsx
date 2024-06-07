@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
-import { collection, doc, arrayUnion, updateDoc } from 'firebase/firestore';
+import { collection, doc, arrayUnion, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebaseconfig';
 import Attachment from "../../assets/attachment.gif";
 import Microphone from "../../assets/microphone.gif";
@@ -22,10 +22,15 @@ const MessageBar = ({ userId }) => {
       return;
     }
 
-    let senderUsername = userData.username;
+    let senderUsername = userData?.username;
     if (anonymous) {
       senderUsername = "Anonymous";
     }
+    
+    console.log("Sender ID:", userId);
+    console.log("Sender Username:", senderUsername);
+    console.log("Message:", message);
+    console.log(userData);
 
     try {
       await updateDoc(doc(db, "livechat", "live"), {
@@ -52,23 +57,23 @@ const MessageBar = ({ userId }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        console.log("User_ID:", userId);
-        const userDoc = await doc(db, "users", userId).get(); 
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          console.log("---------------------------------------------");
-          console.log("User Data---------", userData);
-          setUserData(userData);
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setUserData(docSnap.data());
         } else {
-          console.log("User document not found.");
+          console.log("No such document!");
         }
       } catch (error) {
         console.log(error.message);
       }
     };
 
-    fetchUserData();
-  }, [userId]); // Depend on userId
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
 
   return (
     <div className='h-[60px] w-full border border-t-gray-300 px-3 p-1 flex justify-center items-center'>

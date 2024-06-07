@@ -14,9 +14,10 @@ const Users = () => {
     const fetchUserByInput = async () => {
       if (inputUser === "") {
         // setShowRecent(true);
-        setResultUsers([]);
+        setResultUsers([]); // earlier I set it to get all user in empty string , which will be unncessary overhead when large users dataset
         return;
       }
+      
       const start = inputUser;
       const end = inputUser + '\uf8ff';
 
