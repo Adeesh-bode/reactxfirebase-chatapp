@@ -1,20 +1,15 @@
-//todo: issue whenever I click other userHiglight the chats components is not rerendered some chats with other person are still there
-import UserHighlight from "../UserHighlight"
+// SearchResult Component
 
-const SearchResult = ( { users }  ) => {
-  console.log(users);
+import UserHighlight from "../UserHighlight";
+
+const SearchResult = ({ users }) => {
   return (
     <div className="users w-full flex flex-col gap-3 overflow-auto">
-      {
-        users.map((user)=>{
-          return(
-            <UserHighlight key={user.uid} username={user.username} status={ ( user.status)? 'online' : 'offline-ls'} uid={user.uid} />
-            // <UserHighlight username={user.username} status={ ( user.status)? 'online' : 'offline-ls'} bio={ user.bio? user.bio : ''} />
-          )
-        })
-      }
+      {users.map((user) => (
+        <UserHighlight key={user.uid} username={user.username} status={user.status ? 'online' : 'offline-ls'} uid={user.uid} />
+      ))}
     </div>
-  )
+  );
 }
 
-export default SearchResult; 
+export default SearchResult;
