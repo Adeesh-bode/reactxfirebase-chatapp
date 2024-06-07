@@ -62,7 +62,7 @@ const ChatRoom = () => {
     <div className='h-screen w-full bg-white flex flex-col justify-between'>
       {userId ? (
         <>
-          <ChatRoomNavbar data={otherUser} />
+          <ChatRoomNavbar userId={userId} data={otherUser} />
           <Chats userId={userId} chatWithId={chatWith} />
           <MessageBar userId={userId} chatWithId={chatWith} />
         </>
