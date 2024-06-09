@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
-import { collection, doc, arrayUnion, updateDoc, getDoc } from 'firebase/firestore';
+import {  doc, arrayUnion, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebaseconfig';
 import Attachment from "../../assets/attachment.gif";
 import Microphone from "../../assets/microphone.gif";
@@ -38,6 +38,8 @@ const MessageBar = ({ userId }) => {
           senderid: userId,
           senderusername: senderUsername,
           message: message,
+          region: userData?.region,
+
         })
       });
       console.log("Message Sent");
