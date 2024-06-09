@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
 import {  doc, arrayUnion, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebaseconfig';
 import Attachment from "../../assets/attachment.gif";
 import Microphone from "../../assets/microphone.gif";
 
-const MessageBar = ({ userId }) => {
+const MessageBar = ({ userId, userData }) => { // Receive userData as prop
   const [message, setMessage] = useState('');
-  const [userData, setUserData] = useState({});
   const [anonymous, setAnonymous] = useState(false); 
 
   const handleChange = (e) => {
@@ -31,15 +30,16 @@ const MessageBar = ({ userId }) => {
     console.log("Sender Username:", senderUsername);
     console.log("Message:", message);
     console.log(userData);
+    console.log(userData?.region);
+
 
     try {
       await updateDoc(doc(db, "livechat", "live"), {
         data: arrayUnion({
-          senderid: userId,
-          senderusername: senderUsername,
-          message: message,
-          region: userData?.region,
-
+          senderid: userId || "Unknown",
+          senderusername: senderUsername || "Unknown",
+          message: message || "No message",
+          region: userData?.region || "Unknown",
         })
       });
       console.log("Message Sent");
@@ -55,27 +55,6 @@ const MessageBar = ({ userId }) => {
       sendMessage();
     }
   };
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
-        } else {
-          console.log("No such document!");
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
 
   return (
     <div className='h-[60px] w-full border border-t-gray-300 px-3 p-1 flex justify-center items-center'>

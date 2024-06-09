@@ -90,7 +90,11 @@ const Navbar = () => {
             <img src={Profile} alt='user profile Image' className='h-12 w-12 rounded-full object-cover' onClick={()=>navigate('/profile') } />
         </div>
         <div className='flex flex-col gap-5 '>
-          <GoHomeFill className='text-white opacity-60 h-8 w-8 hover:opacity-100 ' onClick={()=>setDashboard(true)} />
+          <GoHomeFill className='text-white opacity-60 h-8 w-8 hover:opacity-100 ' onClick={()=>{
+            setDashboard(true);
+            navigate('/');
+          } 
+        } />
           <MdGroups className='text-white opacity-60 h-8 w-8  hover:opacity-100' onClick={()=>navigate('/community')} />
           <FaTelegramPlane className='text-white opacity-60 h-8 w-8  hover:opacity-100' onClick={()=>navigate('/globalchat')} />
           <HiInboxArrowDown  className='text-white opacity-60 h-8 w-8  hover:opacity-100'onClick={()=>navigate('/inbox')} />

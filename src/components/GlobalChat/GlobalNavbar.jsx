@@ -4,7 +4,8 @@ import FriendImg from '../../assets/friend.jpg'
 import Phone from '../../assets/phone.gif';
 import Video from '../../assets/video.gif';
 import Menu from '../../assets/menu.gif';
-
+import { useEffect , useContext} from 'react';
+import { context } from '../../utils/context';
 const regions = {
   india: 'India',
   usa: 'United States',
@@ -18,10 +19,10 @@ const regions = {
   brazil: 'Brazil'
 };
 
-const ChatRoomNavbar = () => {
+const ChatRoomNavbar = ( { userData }) => {
+  const { region, setRegion } = useContext(context); 
 
-  
-
+  useEffect
   return (
     <div className='h-[90px] w-full border border-b-gray-300 px-3  flex justify-between items-center'>
         <div className=' flex gap-2 items-center'>

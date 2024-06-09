@@ -4,7 +4,7 @@ import { doc } from 'firebase/firestore';
 
 import { onSnapshot } from 'firebase/firestore';  
 
-import { useState , useEffect , useRef } from 'react';
+import { useState , useEffect , useRef , useContext } from 'react';
 
 const Chats = ({ userId}) => {
   console.log("44444444444444:",userId);
@@ -12,6 +12,7 @@ const Chats = ({ userId}) => {
   const globalchatsRef = useRef(null); 
 
   useEffect(() => {
+    const { region,  } = useContext(context); 
     const unsubscribe = onSnapshot(doc(db, "livechat","live"), (docSnapshot) => {    
       // const chatsArray = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })); //.docs sed cause itterating in collection 
       // console.log("Snapshot:",docSnapshot);
