@@ -12,8 +12,8 @@ const AppContext = ({ children }) => {
   const [showNavbar, setShowNavbar] = useState(false);
   const [chatWith, setChatWith] = useState('');
   const [dashboard, setDashboard] = useState(true);
-  const [ region , setRegion] =  useState({ city: userData?.region?.city , country : userData?.region?.country , state: userData?.region?.state });
-
+  const [region, setRegion] = useState(null); // Initialize as null
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,15 +25,18 @@ const AppContext = ({ children }) => {
           const docRef = doc(db, 'users', user.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            setUserData(docSnap.data());
+            const data = docSnap.data();
+            setUserData(data);
+            setRegion({ city: data.region.city, country: data.region.country, state: data.region.state });
           } else {
             console.log('No such document!');
           }
         } else {
           setUser(null);
           setUserData(null);
+          setRegion(null);
           setShowNavbar(false);
-          navigate('/login');
+          // navigate('/login');
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -56,6 +59,8 @@ const AppContext = ({ children }) => {
     userData, 
     region,
     setRegion,
+    credentials,
+    setCredentials,
   };
 
   return <context.Provider value={contextValue}>{children}</context.Provider>;

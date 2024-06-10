@@ -33,6 +33,11 @@ const provider = new GoogleAuthProvider();
 import { getFirestore } from "firebase/firestore";
 
 // Initialize Cloud Firestore and get a reference to the service
- const db = getFirestore(app);
+const db = getFirestore(app);
 
-export { auth , provider , db }; // exporting all the keys to be used in other files
+
+// Initialize firebase storage and get a reference to the service
+ import { getStorage}  from "firebase/storage";
+ const storage = getStorage(app);
+
+export { auth , provider , db  , storage }; // exporting all the keys to be used in other files

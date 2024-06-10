@@ -1,30 +1,51 @@
-
 import { db } from '../../utils/firebaseconfig';    
-import { doc } from 'firebase/firestore';    
+import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';  
+import { useState, useEffect, useRef, useContext } from 'react';
+import { context } from '../../utils/context';
 
-import { onSnapshot } from 'firebase/firestore';  
-
-import { useState , useEffect , useRef , useContext } from 'react';
-
-const Chats = ({ userId}) => {
-  console.log("44444444444444:",userId);
-  const [ chats , setChats ] = useState([]);   
+const Chats = ({ userId }) => {
+  const { region } = useContext(context); 
+  const [chats, setChats] = useState([]);   
   const globalchatsRef = useRef(null); 
 
   useEffect(() => {
-    const { region,  } = useContext(context); 
-    const unsubscribe = onSnapshot(doc(db, "livechat","live"), (docSnapshot) => {    
-      // const chatsArray = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })); //.docs sed cause itterating in collection 
-      // console.log("Snapshot:",docSnapshot);
-      const chatsArray = docSnapshot.data();
-      setChats( chatsArray.data || []);
-    });
-    console.log("CHATS ARRAY:",chats);
-    return () => unsubscribe();
-  }, []); 
+    if (!region || !region.country || !region.state || !region.city) {
+      console.log('Region data is not fully available:', region);
+      return;
+    }
 
+    const stringCode = `${region.country}${region.state}${region.city}`;
+    console.log(`Subscribing to document: livechat/${stringCode}`);
 
-  console.log("Chats:", chats);
+    const ensureDocumentExists = async () => {
+      const docRef = doc(db, "livechat", stringCode);
+      const docSnapshot = await getDoc(docRef);
+
+      if (!docSnapshot.exists()) {
+        console.log(`Document livechat/${stringCode} does not exist, creating it.`);
+        await setDoc(docRef, { chats: [] });
+      }
+
+      const unsubscribe = onSnapshot(docRef, (docSnapshot) => {    
+        if (docSnapshot.exists()) { 
+          console.log(`Document livechat/${stringCode} data:`, docSnapshot.data());
+          setChats(docSnapshot.data().chats || []);    
+        }
+      });
+
+      return unsubscribe;
+    };
+
+    const unsubscribePromise = ensureDocumentExists();
+
+    return () => {
+      unsubscribePromise.then(unsubscribe => {
+        if (unsubscribe) {
+          unsubscribe();
+        }
+      });
+    };
+  }, [region]);
 
   useEffect(() => {
     if (globalchatsRef.current) {
@@ -33,39 +54,18 @@ const Chats = ({ userId}) => {
   }, [chats]);
 
   return (
-    <div ref={globalchatsRef}  className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
-        {/* <div className='flex flex-col items-start'>
-            <div className='bg-teal-400 w-fit p-3 rounded-md ' >
-                <div className=''>hey alex what's Up?</div>
-            </div>    
-            <div className='text-xs'>Yesterday 2:00pm</div>
+    <div ref={globalchatsRef} className='h-full w-full px-8 py-10 flex flex-col gap-3 overflow-auto'>
+      {chats.map((chat, index) => (
+        <div className={`flex flex-col ${chat?.senderid === userId ? "items-end" : "items-start"}`} key={index}>
+          <div className='bg-teal-400 w-fit p-3 rounded-md'>
+            <div className=''>{chat.message}</div>
+          </div>    
+          <div className='text-xs'>{chat.senderusername}</div>
+          <div className='text-xs'>Today 8:00am</div>
         </div>
-        <div className='flex flex-col items-start'>
-        <div className='bg-teal-400 w-fit p-3 rounded-md ' >
-        <div className=''>As always Happy!!!</div>
-        </div>    
-        <div className='text-xs'>Today 8:01am</div>
-      </div> */}
-      { console.log("Chats:",chats)}
-      {/* { console.log("Chats DATA:",chats.data)} */}
-      {/* { console.log("uid:",user.uid)} */}
-      { 
-        chats.map((chat,index)=>{
-          return(
-            <div className={`flex flex-col ${ chat?.senderid === userId ? "items-end" : "items-start"} `} key={index}>
-              <div className='bg-teal-400 w-fit p-3 rounded-md ' >
-                  <div className=''>{ chat.message }</div>
-              </div>    
-              <div className='text-xs'>{ chat.senderusername }</div>
-              <div className='text-xs'>Today 8:00am</div>
-          </div>
-        )
-      }
-        )
-      }
-          
+      ))}
     </div>
-  )
+  );
 }
 
-export default Chats
+export default Chats;

@@ -10,7 +10,7 @@ import Connect from '../assets/connect.gif';
 import axios from 'axios';
 
 const Signup = () => {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
+  // const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [ region , setRegion ] = useState({ city:null , country:null , state:null});
   const { credentials, setCredentials, setUser, setShowNavbar } = useContext(context);
   const { enqueueSnackbar } = useSnackbar();
@@ -22,7 +22,7 @@ const Signup = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
+          // setLocation({ latitude, longitude });
           fetchLocationInfo(latitude, longitude); // Fetch location info when coordinates are available
         },
         (err) => {
