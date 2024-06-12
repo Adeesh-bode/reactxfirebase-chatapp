@@ -1,7 +1,7 @@
 import UserImg from '../../../assets/friend.jpg';
 import { useContext } from 'react';
 import { context } from '../../../utils/context';
-const UserHighlight = ({ username ='GFG President' , status='online' ,uid }) => {
+const UserHighlight = ({ username ='GFG President' , status='online' ,uid , profilepic }) => {
     const { setChatWith , setDashboard} = useContext(context);
     
     const toPersonalChat = ()=>{
@@ -13,7 +13,7 @@ const UserHighlight = ({ username ='GFG President' , status='online' ,uid }) => 
     return (
     <div className='bg-white hover:bg-teal-300 border rounded-md w-full p-3' onClick={toPersonalChat}>
         <div className=' flex justify-start  items-center gap-2'>
-            <img src={UserImg} alt='user profile Image' className='h-14 w-14 mx-3 rounded-full object-cover'/>
+            <img src={ profilepic || UserImg} alt='user profile Image' className='h-14 w-14 mx-3 rounded-full object-cover'/>
             <div className=' flex flex-col '>
                         <div className='font-bold'>{ username }</div>
                 <div className='text-gray-500'>{ status }</div>

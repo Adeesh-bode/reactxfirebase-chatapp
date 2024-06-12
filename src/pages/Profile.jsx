@@ -1,3 +1,4 @@
+// todo: error on refresh
 import { useContext, useState } from 'react';
 import { context } from '../utils/context';
 import { storage, db } from '../utils/firebaseconfig'; // Import your firebase configuration
@@ -62,16 +63,16 @@ const ProfilePage = () => {
       <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-105">
         <div className="flex justify-center p-6">
           <div className="rounded-full overflow-hidden h-32 w-32 flex justify-center items-center shadow-lg">
-            <img src={userData.profilepic ? userData.profilepic : avatar} alt="User Avatar" className="h-full w-full object-cover" />
+            <img src={(userData?.profilepic) ? userData?.profilepic : avatar} alt="User Avatar" className="h-full w-full object-cover" />
           </div>
         </div>
         <div className="px-6 py-4">
-          <div className="font-bold text-2xl mb-2 text-gray-900">{userData.username}</div>
-          <p className="text-gray-700 text-base">Status: {userData.status ? "Active" : "Inactive"}</p>
-          <p className="text-gray-700 text-base">Bio: {userData.bio}</p>
-          <p className="text-gray-700 text-base">Email: {userData.email}</p>
-          <p className="text-gray-700 text-base">Phone Number: {userData.phoneNumber || "Not provided"}</p>
-          <p className="text-gray-700 text-base">Region: {userData.region.city}, {userData.region.state}, {userData.region.country}</p>
+          <div className="font-bold text-2xl mb-2 text-gray-900">{userData?.username}</div>
+          <p className="text-gray-700 text-base">Status: {userData?.status ? "Active" : "Inactive"}</p>
+          <p className="text-gray-700 text-base">Bio: {userData?.bio}</p>
+          <p className="text-gray-700 text-base">Email: {userData?.email}</p>
+          <p className="text-gray-700 text-base">Phone Number: {userData?.phoneNumber || "Not provided"}</p>
+          <p className="text-gray-700 text-base">Region: {userData?.region.city}, {userData?.region.state}, {userData?.region.country}</p>
         </div>
         <div className="px-6 py-4">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">

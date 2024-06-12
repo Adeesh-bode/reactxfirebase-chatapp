@@ -1,3 +1,4 @@
+// todo: 2 diff doc in db
 import { useEffect, useState } from 'react';
 import { doc, updateDoc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../../utils/firebaseconfig';

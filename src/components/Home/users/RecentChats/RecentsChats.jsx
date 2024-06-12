@@ -34,7 +34,6 @@ const RecentChats = () => {
     fetchUserData();
   }, [userId]);
 
-  // Fetching user ID
   useEffect(() => {
     const fetchUserId = async () => {
       onAuthStateChanged(auth, async (user) => {
@@ -55,14 +54,12 @@ const RecentChats = () => {
     fetchUserId();
   }, [navigate]);
 
-  // Setting recent users from userData
   useEffect(() => {
     if (userData?.RecentChatsWith) {
       setRecentUsers(userData.RecentChatsWith);
     }
   }, [userData]);
 
-  // Fetching data for recent users
   useEffect(() => {
     const fetchRecentUsersData = async () => {
       try {
@@ -86,7 +83,7 @@ const RecentChats = () => {
       }
     };
 
-    if (recentUsers.length > 0) {
+    if (recentUsers?.length > 0) {
       fetchRecentUsersData();
     }
   }, [recentUsers]);
@@ -94,7 +91,7 @@ const RecentChats = () => {
   return (
     <div className='users w-full flex flex-col gap-3 overflow-auto'>
       {recentUsersData.map((user, index) => (
-        <UserHighlight key={index} username={user.username} uid={user.uid} />
+        <UserHighlight key={index} username={user?.username} uid={user?.uid} profilepic={ user?.profilepic }/>
       ))}
     </div>
   );
