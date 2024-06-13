@@ -36,7 +36,7 @@ const ChatBot = () => {
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer sk-proj-kRvCUSvpNoyRE1Rq3gzeT3BlbkFJ0JnIvAuKBEGVBFdlvu0a` // Replace with your OpenAI API key
+                            'Authorization': `Bearer openapikeyhere` // Replace with your OpenAI API key
                         }
                     }
                 );
