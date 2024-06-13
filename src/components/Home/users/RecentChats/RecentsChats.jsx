@@ -1,66 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
 import UserHighlight from '../UserHighlight';
 import { doc, getDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from '../../../../utils/firebaseconfig';
+import { db } from '../../../../utils/firebaseconfig';
+import { context } from '../../../../utils/context';
 
 const RecentChats = () => {
-  const navigate = useNavigate();
+  const { userData } = useContext(context); // if userData is a prop/ state then we dont need use effects for recentChatswith but as userData change it should rerender the component
   const [recentUsers, setRecentUsers] = useState([]);
-  const [userData, setUserData] = useState({});
-  const [userId, setUserId] = useState('');
   const [recentUsersData, setRecentUsersData] = useState([]);
+  console.log(userData);
 
-  // Fetching user data
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (userId) {
-          const docRef = doc(db, "users", userId);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            setUserData(docSnap.data());
-          } else {
-            console.log("No such document!");
-          }
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    fetchUserData();
-  }, [userId]);
 
   useEffect(() => {
-    const fetchUserId = async () => {
-      onAuthStateChanged(auth, async (user) => {
-        try {
-          if (user) {
-            console.log("User Id:", user.uid);
-            setUserId(user.uid);
-          } else {
-            navigate("/login");
-            console.log("User is not signed in");
-          }
-        } catch (error) {
-          console.log(error.message);
-        }
-      });
-    };
-
-    fetchUserId();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (userData?.RecentChatsWith) {
-      setRecentUsers(userData.RecentChatsWith);
+    if (userData?.RecentsChatsWith) {
+      setRecentUsers(userData?.RecentsChatsWith);
+      console.log(userData?.RecentsChatsWith);
     }
-  }, [userData]);
+  },[userData]);
 
   useEffect(() => {
+    console.log(recentUsers);
     const fetchRecentUsersData = async () => {
       try {
         const usersData = [];
