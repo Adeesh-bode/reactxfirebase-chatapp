@@ -1,41 +1,18 @@
 
 import { useContext, useEffect, useState } from 'react';
 import { context } from '../../../utils/context';
-import { useNavigate } from 'react-router-dom';
 import ChatRoomNavbar from './ChatRoomNavbar';
 import MessageBar from './MessageBar';
 import Chats from './Chats';
 
-import { auth } from '../../../utils/firebaseconfig';
-import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../utils/firebaseconfig';
 
 const ChatRoom = () => {
-  const { chatWith } = useContext(context);
-  const [userId, setUserId] = useState('');
-  const navigate = useNavigate();
   const [otherUser, setOtherUser] = useState({});
+  const { chatWith, userData } = useContext(context);
+  const userId = userData?.uid;
 
-  useEffect(() => {
-    const fetchUserId = async () => {
-      onAuthStateChanged(auth, async (user) => {
-        try {
-          if (user) {
-            console.log("User Id:", user.uid);
-            setUserId(user.uid);
-          } else {
-            navigate("/login");
-            console.log("User is not signed in");
-          }
-        } catch (error) {
-          console.log(error.message);
-        }
-      });
-    };
-
-    fetchUserId();
-  }, [navigate]);
 
   useEffect(() => {
     const fetchOtherUserData = async () => {

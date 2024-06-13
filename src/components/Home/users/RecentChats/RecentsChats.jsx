@@ -46,11 +46,12 @@ const RecentChats = () => {
       fetchRecentUsersData();
     }
   }, [recentUsers]);
+  
 
   return (
     <div className='users w-full flex flex-col gap-3 overflow-auto'>
       {recentUsersData.map((user, index) => (
-        <UserHighlight key={index} username={user?.username} uid={user?.uid} profilepic={ user?.profilepic }/>
+        <UserHighlight key={index} username={user?.username} uid={user?.uid} status={ user?.status } profilepic={ user?.profilepic } bio={ user?.bio}/>
       ))}
     </div>
   );

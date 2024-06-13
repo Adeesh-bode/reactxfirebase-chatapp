@@ -5,17 +5,20 @@ import { MdGroups } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { HiInboxArrowDown } from "react-icons/hi2";
 import { BsThreeDots } from "react-icons/bs";
+import { FaTelegramPlane } from "react-icons/fa";
 import { FaPowerOff } from "react-icons/fa6";
 import { signOut } from "firebase/auth";
 import { auth } from '../../utils/firebaseconfig';
 import { useSnackbar } from 'notistack';
-import { FaTelegramPlane } from "react-icons/fa";
 import { context } from '../../utils/context';
 import Profile from '../../assets/user_dp.jpeg';
+import { doc, updateDoc } from 'firebase/firestore'; 
+import { db } from '../../utils/firebaseconfig';
 
 
 const Navbar = () => {
   const { navigate, showNavbar, setShowNavbar, setDashboard, userData } = useContext(context);
+  // const [ userId , setUserId ] = useState(userData?.uid); 
   const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -34,17 +37,24 @@ const Navbar = () => {
     })
   }, [])
 
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        console.log('Signout Successful');
-        showSnackbar('Signout Successful', 3000, 'success');
-        navigate('/login');
-      })
-      .catch((error) => {
-        console.log('Error in Signout:', error);
-        showSnackbar('Some Error Occurred', 3000, 'error');
-      })
+  const handleSignOut = async () => {
+    try {
+      // Update Firestore document to set status to false
+      const userDocRef = doc(db, "users", userData.uid);
+      await updateDoc(userDocRef, {
+        status: false,
+        lastactive: new Date().toLocaleString(), // Update last active timestamp
+      });
+
+      // Sign out from Firebase Auth
+      await signOut(auth);
+      console.log('Signout Successful');
+      showSnackbar('Signout Successful', 3000, 'success');
+      navigate('/login');
+    } catch (error) {
+      console.log('Error in Signout:', error);
+      showSnackbar('Some Error Occurred', 3000, 'error');
+    }
   }
 
   if (showNavbar) {
@@ -65,7 +75,7 @@ const Navbar = () => {
           <BsThreeDots className='text-white opacity-60 h-8 w-8 hover:opacity-100 ' onClick={() => navigate('/')} />
         </div>
         <div>
-          <FaPowerOff className='text-white opacity-60 h-8 w-8  hover:opacity-100' onClick={() => handleSignOut()} />
+          <FaPowerOff className='text-white opacity-60 h-8 w-8  hover:opacity-100' onClick={handleSignOut} />
         </div>
       </div>
     )

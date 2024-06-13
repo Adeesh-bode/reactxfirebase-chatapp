@@ -1,4 +1,3 @@
-// todo: 2 diff doc in db
 import { useEffect, useState } from 'react';
 import { doc, updateDoc, arrayUnion, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../../utils/firebaseconfig';
@@ -58,7 +57,6 @@ const MessageBar = ({ userId, chatWithId }) => {
     try {
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-        // Create a new document if it doesn't exist
         await setDoc(docRef, {
           message: []
         });
@@ -70,6 +68,14 @@ const MessageBar = ({ userId, chatWithId }) => {
           sender: userId,
           timestamp: new Date(),
         })
+      });
+
+      // Update RecentsChatsWith array for both users
+      await updateDoc(doc(db, "users", userId), {
+        RecentsChatsWith: arrayUnion(chatWithId)
+      });
+      await updateDoc(doc(db, "users", chatWithId), {
+        RecentsChatsWith: arrayUnion(userId)
       });
 
       console.log("Message Sent");
