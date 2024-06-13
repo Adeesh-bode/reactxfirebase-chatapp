@@ -6,6 +6,8 @@ const Chats = ({ userId, chatWithId }) => {
   const [chats, setChats] = useState([]);
   const chatContainerRef = useRef(null);
 
+  useEffect(()=>{setChats([])},[userId , chatWithId])
+
   useEffect(() => {
     if (!userId || !chatWithId) return;
 

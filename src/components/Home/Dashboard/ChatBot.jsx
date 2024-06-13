@@ -1,8 +1,14 @@
-import { useState } from 'react';
-import { BsRobot } from "react-icons/bs";
-import { FaTelegramPlane } from "react-icons/fa";
+import { useState, useContext } from 'react';
+import axios from 'axios';
+
+import { BsRobot } from 'react-icons/bs';
+import { FaTelegramPlane } from 'react-icons/fa';
+
+import { db } from '../../../utils/firebaseconfig'; 
+import { context } from "../../../utils/context";
 
 const ChatBot = () => {
+    const { userData } = useContext(context);
     const [messages, setMessages] = useState([
         { id: 1, text: "Hey, how are you buddy?", sender: "bot" },
         { id: 2, text: "Hello, good", sender: "user" },
@@ -14,11 +20,39 @@ const ChatBot = () => {
         setMessage(e.target.value);
     };
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (message.trim()) {
             const newMessage = { id: messages.length + 1, text: message, sender: 'user' };
             setMessages([...messages, newMessage]);
             setMessage('');
+
+            try {
+                const response = await axios.post(
+                    'https://api.openai.com/v1/engines/davinci-codex/completions',
+                    {
+                        prompt: message,
+                        max_tokens: 150
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer sk-proj-kRvCUSvpNoyRE1Rq3gzeT3BlbkFJ0JnIvAuKBEGVBFdlvu0a` // Replace with your OpenAI API key
+                        }
+                    }
+                );
+
+                const aiResponse = response.data.choices[0].text.trim();
+                const newAiMessage = { id: messages.length + 2, text: aiResponse, sender: 'bot' };
+                setMessages([...messages, newAiMessage]);
+
+                const userRef = db.collection('AiChats').doc(userData.uid);
+                await userRef.set({
+                    messages: [...messages, newMessage, newAiMessage]
+                });
+
+            } catch (error) {
+                console.error('Error fetching AI response:', error);
+            }
         }
     };
 
@@ -51,7 +85,7 @@ const ChatBot = () => {
                 </button>
             </div>
         </div>
-    )
+    );
 }
 
 export default ChatBot;

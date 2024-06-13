@@ -11,7 +11,7 @@ const UserHighlight = ({ username ='GFG President' , status='online' ,uid , prof
         console.log("CHAT WITH USER ID NOW CLICKED IN HIGHLIGHT: ", uid);
     }
     return (
-    <div className='bg-white hover:bg-teal-300 border rounded-md w-full p-3' onClick={toPersonalChat}>
+    <div className='bg-white hover:bg-teal-300 border rounded-md w-full p-3 flex flex-col gap-2' onClick={toPersonalChat}>
         <div className=' flex justify-start  items-center gap-2'>
             <img src={ profilepic || UserImg} alt='user profile Image' className='h-14 w-14 mx-3 rounded-full object-cover'/>
             <div className=' flex flex-col '>
@@ -19,7 +19,7 @@ const UserHighlight = ({ username ='GFG President' , status='online' ,uid , prof
                 <div className='text-gray-500'>{ (status)? 'online': 'offline' }</div>
             </div>
         </div>
-        <div className=' px-3 text-sm'>
+        <div className=' w-full flex justify-center px-3 text-sm'>
             {/* <div > */}
                 { bio }
             {/* </div> */}
