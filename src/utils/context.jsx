@@ -8,11 +8,11 @@ export const context = createContext();
 
 const AppContext = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null); // State to store user data
+  const [userData, setUserData] = useState(null); 
   const [showNavbar, setShowNavbar] = useState(false);
   const [chatWith, setChatWith] = useState('');
   const [dashboard, setDashboard] = useState(true);
-  const [region, setRegion] = useState(null); // Initialize as null
+  const [region, setRegion] = useState(null); 
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const navigate = useNavigate();
 
@@ -21,7 +21,6 @@ const AppContext = ({ children }) => {
       try {
         if (user) {
           setUser(user);
-          // Fetch user data when user is authenticated
           const docRef = doc(db, 'users', user.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {

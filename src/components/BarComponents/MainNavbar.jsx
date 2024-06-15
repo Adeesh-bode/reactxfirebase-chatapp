@@ -39,14 +39,12 @@ const Navbar = () => {
 
   const handleSignOut = async () => {
     try {
-      // Update Firestore document to set status to false
       const userDocRef = doc(db, "users", userData.uid);
       await updateDoc(userDocRef, {
         status: false,
-        lastactive: new Date().toLocaleString(), // Update last active timestamp
+        lastactive: new Date().toLocaleString(), 
       });
 
-      // Sign out from Firebase Auth
       await signOut(auth);
       console.log('Signout Successful');
       showSnackbar('Signout Successful', 3000, 'success');

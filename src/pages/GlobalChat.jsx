@@ -11,7 +11,7 @@ import { doc, getDoc } from 'firebase/firestore';
 const GlobalChat = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const [userData, setUserData] = useState({}); // Add userData state
+  const [userData, setUserData] = useState({}); 
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -58,7 +58,7 @@ const GlobalChat = () => {
     <div className='h-screen w-full bg-white flex flex-col justify-between'>
       <ChatRoomNavbar userData={userData} />
       <LiveChats userId={user?.uid} />
-      <MessageBar userId={user?.uid} userData={userData} /> {/* Pass userData as prop */}
+      <MessageBar userId={user?.uid} userData={userData} />
     </div>
   );
 };

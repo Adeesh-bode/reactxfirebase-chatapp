@@ -61,7 +61,7 @@ const Chats = ({ userId }) => {
             <div className=''>{chat.message}</div>
           </div>    
           <div className='text-xs'>{chat.senderusername}</div>
-          <div className='text-xs'>Today 8:00am</div>
+          {/* <div className='text-xs'>Today 8:00am</div> */}
         </div>
       ))}
     </div>

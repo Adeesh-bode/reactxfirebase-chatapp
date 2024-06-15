@@ -49,7 +49,7 @@ const Chats = ({ userId, chatWithId }) => {
   const formatTimestamp = (timestamp) => {
     if (timestamp?.seconds) {
       const date = new Date(timestamp.seconds * 1000);
-      return date.toLocaleString(); // Format the timestamp
+      return date.toLocaleString();
     }
     return "no-time";
   };

@@ -26,7 +26,7 @@ const MessageBar = ({ userId, chatWithId }) => {
         if (docSnap.exists()) {
           setChatDocId(code2);
         } else {
-          setChatDocId(code1); // Default to code1 if neither exists
+          setChatDocId(code1);
         }
       }
     };
@@ -35,7 +35,6 @@ const MessageBar = ({ userId, chatWithId }) => {
   }, [userId, chatWithId]);
 
   useEffect(() => {
-    // Clear the message input whenever the component rerenders
     setMessage('');
   }, []);
 
@@ -45,7 +44,7 @@ const MessageBar = ({ userId, chatWithId }) => {
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    if (!message.trim()) return; // Prevent sending empty messages
+    if (!message.trim()) return;
 
     if (!chatDocId) {
       console.error("Chat document ID is not set.");
@@ -70,7 +69,6 @@ const MessageBar = ({ userId, chatWithId }) => {
         })
       });
 
-      // Update RecentsChatsWith array for both users
       await updateDoc(doc(db, "users", userId), {
         RecentsChatsWith: arrayUnion(chatWithId)
       });
@@ -79,7 +77,7 @@ const MessageBar = ({ userId, chatWithId }) => {
       });
 
       console.log("Message Sent");
-      setMessage(''); // Clear the message input
+      setMessage(''); 
     } catch (error) {
       console.log(error.message);
     }

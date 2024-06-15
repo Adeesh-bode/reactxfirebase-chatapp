@@ -4,10 +4,10 @@ import Video from '../../assets/video.gif';
 import Menu from '../../assets/menu.gif';
 import { useEffect, useContext, useState } from 'react';
 import { context } from '../../utils/context';
-import { countries, states, cities } from './data'; // Importing data from data.js
+import { countries, states, cities } from './data'; 
 
 const ChatRoomNavbar = ({ userData }) => {
-  const { region, setRegion } = useContext(context); 
+  const { setRegion } = useContext(context); 
   const [selectedCountry, setSelectedCountry] = useState(userData?.region?.country || '');
   const [selectedState, setSelectedState] = useState(userData?.region?.state || '');
   const [selectedCity, setSelectedCity] = useState(userData?.region?.city || '');
@@ -24,7 +24,7 @@ const ChatRoomNavbar = ({ userData }) => {
   };
 
   const handleStateChange = (e) => {
-    const newState = e.target.value.toLowerCase(); // Convert to lowercase
+    const newState = e.target.value.toLowerCase(); 
     setSelectedState(newState);
     setSelectedCity('');
   };

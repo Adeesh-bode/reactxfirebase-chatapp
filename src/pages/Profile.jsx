@@ -11,6 +11,8 @@ const ProfilePage = () => {
   const [uploading, setUploading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
+
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -24,9 +26,9 @@ const ProfilePage = () => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        // Optional: Track progress if needed
       },
       (error) => {
+        window.alert("Upload failed:");
         console.error("Upload failed:", error);
         setUploading(false);
       },
@@ -34,7 +36,6 @@ const ProfilePage = () => {
         try {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-          // Delete the existing profile picture if it exists
           if (userData.profilepic) {
             const existingPicRef = ref(storage, userData.profilepic);
             await deleteObject(existingPicRef).catch((error) => {
@@ -42,11 +43,9 @@ const ProfilePage = () => {
             });
           }
 
-          // Update Firestore with the new profile pic URL
           const userRef = doc(db, "users", userData.uid);
           await updateDoc(userRef, { profilepic: downloadURL });
 
-          // Update local state with new profile pic URL
           setUserData({ ...userData, profilepic: downloadURL });
           setUploading(false);
           setSuccessMessage('Profile picture updated successfully!');
@@ -68,7 +67,7 @@ const ProfilePage = () => {
         </div>
         <div className="px-6 py-4">
           <div className="font-bold text-2xl mb-2 text-gray-900">{userData?.username}</div>
-          <p className="text-gray-700 text-base">Status: {userData?.status ? "Active" : "Inactive"}</p>
+          {/* <p className="text-gray-700 text-base">Status: {userData?.status ? "Active" : "Inactive"}</p> */}
           <p className="text-gray-700 text-base">Bio: {userData?.bio}</p>
           <p className="text-gray-700 text-base">Email: {userData?.email}</p>
           <p className="text-gray-700 text-base">Phone Number: {userData?.phoneNumber || "Not provided"}</p>

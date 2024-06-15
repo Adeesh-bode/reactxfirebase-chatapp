@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState , useContext } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { doc, arrayUnion, updateDoc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebaseconfig';
 import Attachment from "../../assets/attachment.gif";
 import Microphone from "../../assets/microphone.gif";
+import { context } from '../../utils/context';
 
 const MessageBar = ({ userId, userData }) => {
+  const { region } = useContext(context);
+
   const [message, setMessage] = useState('');
   const [anonymous, setAnonymous] = useState(false); 
 
@@ -32,10 +35,10 @@ const MessageBar = ({ userId, userData }) => {
     console.log("Sender ID:", userId);
     console.log("Sender Username:", senderUsername);
     console.log("Message:", message);
-    console.log(userData);
-    console.log(userData?.region);
+    // console.log(userData);
+    // console.log(userData?.region);
 
-    const stringCode = `${userData?.region?.country}${userData?.region?.state}${userData?.region?.city}`;
+    const stringCode = `${region?.country}${region?.state}${region?.city}`;
     console.log(`Updating document: livechat/${stringCode}`);
 
     try {
