@@ -4,9 +4,11 @@
 
 import { initializeApp } from "firebase/app";
 
+const key = import.meta.env.VITE_FIREBASE_API_KEY;
+// console.log(key); 
 
 const firebaseConfig = {                                    // configuration given by firebase to our account 
-    apiKey: "AIzaSyC8Jo8Xm-4Ixd0MWhjbL1dzYZuPdjmls80",          // api key
+    apiKey: key,          // api key
     authDomain: "reactxfirebase-37a7e.firebaseapp.com",
     projectId: "reactxfirebase-37a7e",
     storageBucket: "reactxfirebase-37a7e.appspot.com",
