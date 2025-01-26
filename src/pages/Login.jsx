@@ -16,6 +16,7 @@ const Login = () => {
   window.alert("Can Use Testing Credentials : email -- luffy@gmail.com | 123456")
 
   const handleChange = (e) => {
+    e.preventDefault();
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
