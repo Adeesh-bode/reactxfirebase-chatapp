@@ -14,6 +14,7 @@ const GlobalChat = () => {
   const [userData, setUserData] = useState({}); 
 
   useEffect(() => {
+    window.alert('Your Location is set as default')
     const fetchUserId = async () => {
       onAuthStateChanged(auth, async (user) => {
         try {

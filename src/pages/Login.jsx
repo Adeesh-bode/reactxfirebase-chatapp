@@ -13,6 +13,8 @@ const Login = () => {
   const showSnackbar = useCustomSnackbar();
   const navigate = useNavigate();
 
+  window.alert("Can Use Testing Credentials : email -- luffy@gmail.com | 123456")
+
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
